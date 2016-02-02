@@ -122,32 +122,41 @@
                             </tr>
                         </table>--%>
                 <div style="float:left">
-                        <ul class="site-navbar-dropdown" style="padding:0;margin:0">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li>
-                                <a href="#">Products &#9662;</a>
-                                <ul class="site-navbar-dropdown-secondary">
-                                    <li><a href="#">Laptops</a></li>
-                                    <li><a href="#">Monitors</a></li>
-                                    <li><a href="#">Printers</a></li>
+                        <ul class="site-navbar-menuitem-primary site-menuitem-bordered" style="padding:0;margin:0">
+                            <li class="site-navbar-dropdown"><a href="#">Complaints</a>
+                                <ul class="site-navbar-dropdown-content">
+                                    <li><a href="#">Log new Complaint</a></li>
+                                    <li><a href="#">Track Complaint</a></li>
+                                    <li><a href="#">View Complaint</a></li>
+                                    <li><a href="#">Delete Complaint</a></li>
+                                </ul>
+                            </li>
+                            <li class="site-navbar-dropdown">
+                                <a href="#">Your Opinion &#9662;</a>
+                                <ul class="site-navbar-dropdown-content">
+                                    <li><a href="#">Suggestions</a></li>
+                                    <li><a href="#">Feedback</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
                 <div style="float:right">
-                 <ul class="site-navbar-dropdown" style="padding:0;margin:0;">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li>
-                                <a href="#">Products &#9662;</a>
-                                <ul class="site-navbar-dropdown-secondary">
-                                    <li><a href="#">Laptops</a></li>
-                                    <li><a href="#">Monitors</a></li>
-                                    <li><a href="#">Printers</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                 <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul class="site-navbar-menuitem-primary site-menuitem-bordered" style="padding:0;margin:0;">
+                                <li><a runat="server" href="~/Account/Register">Register</a></li>
+                                <li><a runat="server" href="~/Account/Login">Log in</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                             <ul class="site-navbar-menuitem-primary site-menuitem-bordered"  style="padding:0;margin:0;">
+                                <li class="site-menuitem-bordered"><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
+                                <li>
+                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                </li>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
                     </div>
                           </td>
                 </tr>
@@ -196,7 +205,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                <p>&copy; <%: DateTime.Now.Year %> - PGRAMS</p>
             </footer>
         </div>
     </form>

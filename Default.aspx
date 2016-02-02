@@ -38,4 +38,20 @@
             </p>
         </div>
     </div>--%>
+
+    <div style="border:1px solid grey;width:100%;height:500px;color:gray;margin-top:20px">
+        <div style="display:inline-block;float:left">
+            <div>Updates</div>
+            <div>Notofications and Updates</div>
+        </div>
+        <div style="display:inline-block;float:left">
+            <span style="vertical-align:middle">Our Activities at a glance</span>
+        </div>
+
+         <div style="display:inline-block;float:left">
+            <div>Noifications</div>
+            <div>Contact Us</div>
+        </div>
+        </div>
+
 </asp:Content>
