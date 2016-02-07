@@ -126,9 +126,7 @@
                             <li class="site-navbar-dropdown"><a href="#">Complaints</a>
                                 <ul class="site-navbar-dropdown-content">
                                     <li><a href="#">Log new Complaint</a></li>
-                                    <li><a href="#">Track Complaint</a></li>
-                                    <li><a href="#">View Complaint</a></li>
-                                    <li><a href="#">Delete Complaint</a></li>
+                                    <li><a href="#">Track existing Complaint</a></li>
                                 </ul>
                             </li>
                             <li class="site-navbar-dropdown">
@@ -203,10 +201,10 @@
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
+            <%--<hr />
             <footer>
                 <p>&copy; <%: DateTime.Now.Year %> - PGRAMS</p>
-            </footer>
+            </footer>--%>
         </div>
     </form>
 </body>

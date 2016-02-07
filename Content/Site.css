@@ -98,3 +98,22 @@ ul.site-menuitem-bordered.site-navbar-menuitem-primary > li:not(:last-child){
     border-right: 2px solid;
     border-color: #ffffff;
 }
+.section-container .inner-div{
+    height:400px;
+    width:100%;
+    box-sizing:border-box;
+    float:left;
+}
+.section-container > div{
+    display:inline-block;
+    width:30%;
+}
+@media screen and (max-width:400px){
+   .section-container > div{
+        width:280px;
+    }
+}
+
+.required-asterisk {
+    color:red;
+}

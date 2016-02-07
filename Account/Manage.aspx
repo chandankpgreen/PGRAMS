@@ -66,7 +66,7 @@
                             <asp:Label runat="server" ID="CurrentPasswordLabel" AssociatedControlID="CurrentPassword" CssClass="col-md-2 control-label">Current password</asp:Label>
                             <div class="col-md-10">
                                 <asp:TextBox runat="server" ID="CurrentPassword" TextMode="Password" CssClass="form-control" />
-                                <asp:RequiredFieldValidator runat="server" ControlToValidate="CurrentPassword"
+                                <asp:RequiredFieldValidator runat="server" ControlToValidate="CurrentPassword" Display="Dynamic"
                                     CssClass="text-danger" ErrorMessage="The current password field is required."
                                     ValidationGroup="ChangePassword" />
                             </div>
@@ -75,7 +75,7 @@
                             <asp:Label runat="server" ID="NewPasswordLabel" AssociatedControlID="NewPassword" CssClass="col-md-2 control-label">New password</asp:Label>
                             <div class="col-md-10">
                                 <asp:TextBox runat="server" ID="NewPassword" TextMode="Password" CssClass="form-control" />
-                                <asp:RequiredFieldValidator runat="server" ControlToValidate="NewPassword"
+                                <asp:RequiredFieldValidator runat="server" ControlToValidate="NewPassword" Display="Dynamic"
                                     CssClass="text-danger" ErrorMessage="The new password is required."
                                     ValidationGroup="ChangePassword" />
                             </div>

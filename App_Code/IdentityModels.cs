@@ -4,6 +4,9 @@ using Microsoft.Owin.Security;
 using System.Web;
 using System;
 using PGRAMS_CS;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 
 namespace PGRAMS_CS
 {
@@ -12,8 +15,10 @@ namespace PGRAMS_CS
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Address { get; set;}
-        public long PinCode { get; set; }
+    }
+    public class ApplicationRole : IdentityRole
+    {
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -22,6 +27,8 @@ namespace PGRAMS_CS
             : base("DefaultConnection")
         {
         }
+        public DbSet<Complainant> Complainants { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 
     #region Helpers
@@ -29,6 +36,13 @@ namespace PGRAMS_CS
     {
         public UserManager()
             : base(new UserStore<ApplicationUser>(new ApplicationDbContext()))
+        {
+        }
+    }
+    public class RoleManager : RoleManager<ApplicationRole>
+    {
+        public RoleManager()
+            : base(new RoleStore<ApplicationRole>(new ApplicationDbContext()))
         {
         }
     }

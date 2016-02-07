@@ -9,6 +9,8 @@
     {
         RouteConfig.RegisterRoutes(RouteTable.Routes);
         BundleConfig.RegisterBundles(BundleTable.Bundles);
+        //System.Data.Entity.Database.SetInitializer<ApplicationDbContext>(null);
+        UserRoleInitialization.InitializeRoles();
     }
 
 </script>
