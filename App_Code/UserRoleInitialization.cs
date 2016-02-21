@@ -31,6 +31,10 @@ public class UserRoleInitialization
         {
             roleMgr.Create(new ApplicationRole { Name = "Complainant" });
         }
+        if (!roleMgr.RoleExists("Auditor"))
+        {
+            roleMgr.Create(new ApplicationRole { Name = "Auditor" });
+        }
     }
 
 

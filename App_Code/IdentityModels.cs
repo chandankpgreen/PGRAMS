@@ -29,6 +29,9 @@ namespace PGRAMS_CS
         }
         public DbSet<Complainant> Complainants { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Grievance> Grievances { get; set; }
+        public DbSet<Suggestion> Suggestions { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
     }
 
     #region Helpers

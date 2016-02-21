@@ -1,27 +1,26 @@
 ﻿using PGRAMS_CS;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 /// <summary>
-/// Summary description for Complainant
+/// Summary description for Employee
 /// </summary>
 namespace PGRAMS_CS
 {
-    public class Complainant : ApplicationUser
+    public class Employee : ApplicationUser
     {
-        public string Address { get; set; }
-        public long PinCode { get; set; }
-        public virtual ICollection<Grievance> Greivances { get; set; }
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<Suggestion> Suggesions { get; set; }
+        public long EmployeeID { get; set; }
+        public Grievance.GrievanceTypes Department { get; set; }
 
-        public Complainant()
+        public Employee()
         {
 
         }
-        public Complainant(ApplicationUser AppUser)
+        public Employee(ApplicationUser AppUser)
         {
             this.UserName = AppUser.UserName;
             this.FirstName = AppUser.FirstName;

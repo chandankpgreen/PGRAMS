@@ -13,24 +13,28 @@ public partial class Account_Register : Page
         // object. 
        
         var userMgr = new UserManager();
-        var user = new ApplicationUser() { UserName = UserName.Text, FirstName = FirstName.Text, LastName = LastName.Text, PhoneNumber = PhoneNumber.Text, Email = Email.Text };
-        IdentityResult IdUserResult = userMgr.Create(user, Password.Text);
+        var complainant = new Complainant()
+        {
+            UserName = UserName.Text,
+            FirstName = FirstName.Text,
+            LastName = LastName.Text,
+            PhoneNumber = PhoneNumber.Text,
+            Email = Email.Text,
+            Address = Address.Text,
+            PinCode = Convert.ToInt64(PinCode.Text)
+        };
+        IdentityResult IdUserResult = userMgr.Create(complainant, Password.Text);
+
+        UserRoleInitialization.InitializeRoles();
 
         if (IdUserResult.Succeeded)
         {
-            if (!userMgr.IsInRole(user.Id, "Complainant")) // Only users of type "Complainant" can be created from the "Register" page.
+            if (!userMgr.IsInRole(complainant.Id, "Complainant")) // Only users of type "Complainant" can be created from the "Register" page.
             {
-                IdUserResult = userMgr.AddToRole(user.Id, "Complainant");
+                IdUserResult = userMgr.AddToRole(complainant.Id, "Complainant");
             }
-            ApplicationDbContext dbCon = new ApplicationDbContext();
-            dbCon.Complainants.Add(new Complainant(user)
-            {
-                Address = Address.Text,
-                PinCode = Convert.ToInt64(PinCode.Text)
-            });
-
-           // dbCon.SaveChanges();
-            IdentityHelper.SignIn(userMgr, user, isPersistent: false);
+            
+            IdentityHelper.SignIn(userMgr, complainant, isPersistent: false);
             IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
         }
         else
