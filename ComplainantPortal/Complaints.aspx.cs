@@ -6,20 +6,16 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
+using System.ComponentModel;
 
 public partial class ComplainantPortal_Complaints : System.Web.UI.Page
 {
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        //using (ApplicationDbContext DbContext = new ApplicationDbContext())
-        //{
-        //    string LoggedInUserID = User.Identity.GetUserId();
-        //    grdComplaints.DataSource = (from grievance in DbContext.Grievances
-        //                                where grievance.Complainant.Id == LoggedInUserID
-        //                                select grievance).ToList();
-        //    grdComplaints.DataBind();
-        //}
-
+        foreach(Grievance.GrievanceTypes value in Enum.GetValues( typeof(Grievance.GrievanceTypes))){
+            ddlComplaintType.Items.Add(new ListItem(value.GetDescription(), ((int)value).ToString()));
+        }
     }
  
     protected void btnRegisterComplaint_Click(object sender, EventArgs e)
@@ -44,9 +40,14 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
         {
             try
             {
+                string FilePathOnServer = string.Empty;
                 // Save to Images/Thumbs folder.
-                string FilePathOnServer = fuComplaintPic.HasFile ? path + fuComplaintPic.FileName : string.Empty;
-                fuComplaintPic.PostedFile.SaveAs(FilePathOnServer);
+                if (fuComplaintPic.HasFile)
+                {
+                    FilePathOnServer = path + fuComplaintPic.FileName;
+                    fuComplaintPic.PostedFile.SaveAs(FilePathOnServer);
+                }
+              
                 Grievance newGrievance = new Grievance()
                 {
                     GrievanceDescription = txtComplaintDescription.Text,
@@ -61,6 +62,9 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
                     DbContext.Grievances.Add(newGrievance);
                     DbContext.SaveChanges();
                 }
+                SuccessMessage.Text = "Your complaint has been successfully logged.";
+                System.Threading.Thread.Sleep(3000);
+                Response.Redirect("TrackComplaints.aspx");
 
             }
             catch (Exception ex)
@@ -73,5 +77,23 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
         {
             ErrorMessage.Text = "Unable to accept file type.";
         }
+    }
+}
+
+public static class EnumExtensionMethods
+{
+    public static string GetDescription(this Enum enumValue)
+    {
+        object[] attr = enumValue.GetType().GetField(enumValue.ToString())
+            .GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+        return attr.Length > 0
+           ? ((DescriptionAttribute)attr[0]).Description
+           : enumValue.ToString();
+    }
+
+    public static T ParseEnum<T>(this string stringVal)
+    {
+        return (T)Enum.Parse(typeof(T), stringVal);
     }
 }
