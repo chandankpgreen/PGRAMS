@@ -17,7 +17,7 @@
         <div ID="btnIgnored"  class="btn btn-danger" title="Click this if you think the redressal department failed to take notice of this in time.">Did not start on time/Ignored</div>
     </div>
     <h4>Your Grievances Listed:</h4>
-    <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints logged by you!" Font-Names="Open Sans,Segoe UI" PageSize="20" CssClass="grid-grievances" Width="100%" OnRowDataBound="grdComplaints_RowDataBound">
+    <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints logged by you!" Font-Names="Open Sans,Segoe UI" PageSize="20" CssClass="grid-grievances" Width="100%" OnRowDataBound="grdComplaints_RowDataBound" AutoGenerateColumns="False">
         <AlternatingRowStyle BackColor="#F2DEDE" />
         <Columns>
             <asp:TemplateField>
@@ -25,6 +25,16 @@
                     <asp:CheckBox ID="ckbSelectGrievance" runat="server" />
                 </ItemTemplate>
             </asp:TemplateField>
+            <asp:BoundField DataField="GrievanceID" HeaderText="Grievance ID" />
+            <asp:BoundField DataField="GrievanceType" HeaderText="Grievance Type" />
+            <asp:BoundField DataField="GrievanceDescription" HeaderText="Grievance Description" />
+            <asp:BoundField DataField="DateLogged" HeaderText="Date of Logging" />
+            <asp:BoundField DataField="TargetCompletionDate" HeaderText="Target Completion Date" />
+            <asp:BoundField DataField="ResolutionStatus" HeaderText="Status" />
+            <asp:BoundField DataField="Comments" HeaderText="Comments" />
+            <asp:ImageField DataImageUrlField="Picture"  HeaderText="Picture" NullDisplayText="No Image" ReadOnly="True" DataImageUrlFormatString="~/Content/Grievances/Images/{0}">
+            </asp:ImageField>
+            <asp:BoundField DataField="Picture" HeaderText="Picture Text" />
         </Columns>
         <HeaderStyle BackColor="#337AB7" ForeColor="White" />
     </asp:GridView>

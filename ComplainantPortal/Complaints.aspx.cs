@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using System.ComponentModel;
+using System.IO;
 
 public partial class ComplainantPortal_Complaints : System.Web.UI.Page
 {
@@ -40,14 +41,6 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
         {
             try
             {
-                string FilePathOnServer = string.Empty;
-                // Save to Images/Thumbs folder.
-                if (fuComplaintPic.HasFile)
-                {
-                    FilePathOnServer = path + fuComplaintPic.FileName;
-                    fuComplaintPic.PostedFile.SaveAs(FilePathOnServer);
-                }
-             
                 using (ApplicationDbContext DbContext = new ApplicationDbContext())
                 {
                     Complainant LoggedInComplainant =  DbContext.Complainants.ToList().Where(x=>(x.Id ==User.Identity.GetUserId())).FirstOrDefault() ;
@@ -58,11 +51,18 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
                         Comments = txtComments.Text,
                         GrievanceType = (Grievance.GrievanceTypes)Convert.ToInt16(ddlComplaintType.SelectedValue),
                         ResolutionStatus = Grievance.ResolutionStatuses.Started,
-                        Picture = FilePathOnServer,
                         Complainant = LoggedInComplainant
                     };
+                   
                     DbContext.Grievances.Add(newGrievance);
                     DbContext.SaveChanges();
+
+                     if (fuComplaintPic.HasFile){
+                         string picturename = newGrievance.GrievanceID.ToString() +  Path.GetExtension(fuComplaintPic.PostedFile.FileName);
+                         newGrievance.Picture = picturename;
+                         fuComplaintPic.PostedFile.SaveAs(Path.Combine(path, picturename));
+                         DbContext.SaveChanges();
+                    }
                 }
                 
                 
@@ -79,6 +79,7 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
         else
         {
             ErrorMessage.Text = "Unable to accept file type.";
+            ErrorPlaceHolder.Visible = true;
         }
     }
 }
