@@ -2,9 +2,12 @@
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <h2>Register</h2>
-    <p class="text-danger">
-        <asp:Literal runat="server" ID="ErrorMessage" />
-    </p>
+   
+    <asp:PlaceHolder runat="server" ID="ErrorPlaceHolder" Visible="false">
+        <div class="alert alert-danger">
+            <asp:Literal runat="server" ID="ErrorMessage" />
+        </div>
+    </asp:PlaceHolder>
 
     <div class="form-horizontal">
         <h4>Create a new account.</h4>

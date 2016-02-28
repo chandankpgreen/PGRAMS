@@ -5676,6 +5676,7 @@ body.modal-open,
   min-height: 16.428571429px;
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
+  background-color:#E0DAC7;
 }
 
 .modal-header .close {
@@ -5693,10 +5694,11 @@ body.modal-open,
 }
 
 .modal-footer {
-  padding: 19px 20px 20px;
-  margin-top: 15px;
+  padding: 10px 5px;
+  margin-top: 5px;
   text-align: right;
   border-top: 1px solid #e5e5e5;
+  
 }
 
 .modal-footer:before,
@@ -5736,8 +5738,9 @@ body.modal-open,
   .modal-dialog {
     right: auto;
     left: 50%;
+    top:30%;
     width: 600px;
-    padding-top: 30px;
+    padding-top: 200px;
     padding-bottom: 30px;
   }
   .modal-content {

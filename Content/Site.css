@@ -117,3 +117,6 @@ ul.site-menuitem-bordered.site-navbar-menuitem-primary > li:not(:last-child){
 .required-asterisk {
     color:red;
 }
+.grid-grievances {
+    margin-top:20px;
+}

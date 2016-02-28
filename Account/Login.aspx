@@ -11,9 +11,9 @@
                 <div class="form-horizontal">
                     
                     <asp:PlaceHolder runat="server" ID="ErrorMessage" Visible="false">
-                        <p class="text-danger">
+                        <div class="alert alert-danger">
                             <asp:Literal runat="server" ID="FailureText" />
-                        </p>
+                        </div>
                     </asp:PlaceHolder>
                     <div class="form-group">
                         <asp:Label runat="server" AssociatedControlID="UserName" CssClass="col-md-3 control-label">User name</asp:Label>

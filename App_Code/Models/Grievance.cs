@@ -17,15 +17,29 @@ namespace PGRAMS_CS
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Complaint ID")]
         public long GrievanceID { get; set; }
 
+        [DisplayName("Complaint Type")]
         public GrievanceTypes GrievanceType { get; set; }
+
+        [DisplayName("Complaint Description")]
         public string GrievanceDescription { get; set; }
+
+        [DisplayName("Date of Logging")]
         public DateTime DateLogged { get; set; }
-        public DateTime? TargetCompletionDate { get; set; } 
+
+        [DisplayName("Target Completion Date")]
+        public DateTime? TargetCompletionDate { get; set; }
+
+        [DisplayName("Status")]
         public ResolutionStatuses ResolutionStatus { get; set; }
+
         public virtual Complainant Complainant { get; set; }
+
+        [DisplayName("Comments")]
         public string Comments { get; set; }
+
         public string Picture { get; set; }
         public virtual ICollection<ResolutionTask> ResolutionTasks { get; set; }
       

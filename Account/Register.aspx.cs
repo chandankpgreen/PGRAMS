@@ -40,6 +40,7 @@ public partial class Account_Register : Page
         else
         {
             ErrorMessage.Text = IdUserResult.Errors.FirstOrDefault();
+            ErrorPlaceHolder.Visible = true;
         }
     }
 }

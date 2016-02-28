@@ -2,12 +2,13 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
      <h2>Log a Complaint</h2>
-    <p class="text-danger">
-        <asp:Literal runat="server" ID="ErrorMessage" />
-    </p>
-     <p class="text-success">
-         <asp:Literal runat="server" ID="SuccessMessage" />
-     </p>
+   
+    <asp:PlaceHolder runat="server" ID="ErrorPlaceHolder" Visible="false">
+        <div class="alert alert-danger">
+            <asp:Literal runat="server" ID="ErrorMessage" />
+        </div>
+    </asp:PlaceHolder>
+     
     <div class="form-horizontal">
         <hr />
          <div class="form-group">
