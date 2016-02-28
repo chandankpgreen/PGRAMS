@@ -1,7 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 
 [assembly: OwinStartupAttribute(typeof(PGRAMS_CS.Startup))]
 namespace PGRAMS_CS
@@ -28,5 +30,16 @@ namespace PGRAMS_CS
         {
             return (T)Enum.Parse(typeof(T), stringVal);
         }
+        public static List<string> GetGrievanceDescriptions()
+        {
+            var enumvalarray = Enum.GetValues(typeof(Grievance.GrievanceTypes));
+            List<string> descriptionarray = new List<string>();
+            foreach (Grievance.GrievanceTypes item in enumvalarray)
+            {
+                descriptionarray.Add(item.GetDescription());
+            }
+            return descriptionarray;
+        }
     }
+
 }

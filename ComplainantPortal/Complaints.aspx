@@ -42,9 +42,40 @@
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <asp:Button ID="btnRegisterComplaint" runat="server" Text="Register Complaint" CssClass="btn btn-default" OnClick="btnRegisterComplaint_Click"  />
+              <div class="btn btn-success" id="btnRegisterConfirm">Log Complaint</div>
             </div>
         </div>
     </div>
+        <!-- Modal -->
+    <div id="modal-Log" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Confirmation</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you have filled up all the required information before logging this complaint?</p>
+          </div>
+          <div class="modal-footer">
+            <asp:Button ID="btnRegisterComplaint" class="btn btn-primary" runat="server" Text="Register Complaint" OnClick="btnRegisterComplaint_Click" OnClientClick="hideModal()"  />
+              <div class="btn btn-danger" data-dismiss="modal">Wait, Let me check once.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script type="text/javascript">
+        function hideModal() {
+            $("#modal-Log").modal("hide");
+        }
+        $(document).ready(function () {
+            $("#btnRegisterConfirm").off("click").on("click", function () {
+                $("#modal-Log").modal("show");
+            });
+        });
+    </script>
 </asp:Content>
 

@@ -12,6 +12,9 @@
         //System.Data.Entity.Database.SetInitializer<ApplicationDbContext>(null);
         // Initialize the product database.
         //UserRoleInitialization.InitializeRoles();
+
+        // Create the custom role and user.
+        UserRoleInitialization.InitializeRoles();
     }
 
 </script>

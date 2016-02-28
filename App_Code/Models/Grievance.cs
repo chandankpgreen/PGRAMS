@@ -51,28 +51,28 @@ namespace PGRAMS_CS
         public enum GrievanceTypes
         {
             [Description("Electrity/Street Lighting")]
-            Electricity = 1,
+            Electricity = 4,
 
             [Description("Water Supply/Plumbing")]
-            Water = 2,
+            Water = 7,
 
             [Description("Sewage/Waste Management/Disposal")]
-            Waste = 3,
+            Waste = 5,
 
             [Description("Cooking Gas Connection/Leakage")]
-            Gas = 4,
+            Gas = 3,
 
             [Description("Roads/Streets")]
             Road = 5,
 
             [Description("Cleanliness")]
-            Cleanliness = 6,
+            Cleanliness = 1,
 
             [Description("Conveninece")]
-            Convenience = 7,
+            Convenience = 2,
 
             [Description("Others")]
-            Others = 8
+            Others = 6
         }
 
         public enum ResolutionStatuses
