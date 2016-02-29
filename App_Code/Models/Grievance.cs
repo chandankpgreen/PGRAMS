@@ -54,10 +54,10 @@ namespace PGRAMS_CS
             Electricity = 4,
 
             [Description("Water Supply/Plumbing")]
-            Water = 7,
+            Water = 8,
 
             [Description("Sewage/Waste Management/Disposal")]
-            Waste = 5,
+            Waste = 6,
 
             [Description("Cooking Gas Connection/Leakage")]
             Gas = 3,
@@ -72,7 +72,7 @@ namespace PGRAMS_CS
             Convenience = 2,
 
             [Description("Others")]
-            Others = 6
+            Others = 7
         }
 
         public enum ResolutionStatuses

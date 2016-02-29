@@ -48,6 +48,14 @@ public partial class Account_Login : Page
                     ////gr.DateLogged = DateTime.Now;
                     //dbcon.Grievances.Add(gr);
                     //dbcon.SaveChanges();
+                    if (rdUserRole.Text == "Auditor")
+                    {
+                        Response.Redirect("~/AuditorPortal/Complaints.aspx");
+                    }
+                    else if (rdUserRole.Text == "Administrator")
+                    {
+
+                    }
                     IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                 }
                 else
