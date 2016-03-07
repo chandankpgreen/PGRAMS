@@ -35,6 +35,17 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
 
             Grievance.ResolutionStatuses val2 = (Grievance.ResolutionStatuses)Enum.Parse(typeof(Grievance.ResolutionStatuses), e.Row.Cells[6].Text);
             e.Row.Cells[6].Text = val2.GetDescription();
+
+            CheckBox chk = (CheckBox)e.Row.FindControl("ckbSelectGrievance");
+            switch (e.Row.Cells[6].Text)
+            {
+                case "Completed implementation":
+                    chk.Visible = true;
+                    break;
+                default:
+                    chk.Visible = false;
+                    break;
+            }
         }
     }
     protected List<Grievance> GetGrievances(string sortexpression = "GrievanceID", SortDirection sortdirection = SortDirection.Ascending)
@@ -42,6 +53,7 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
         ApplicationDbContext dbContext = new ApplicationDbContext();
         string LoggedInUserID = User.Identity.GetUserId();
         List<Grievance> GrievanceList = null;
+        int[] InComplainant = { 1, 2, 3, 10, 11, 12, 13 };
 
         switch (sortexpression)
         {
@@ -219,6 +231,7 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
                 AddSortImage(sortColumnIndex, e.Row);
             }
         }
+       
     }
 
     protected void btnShoddyConfirm_Click(object sender, EventArgs e)
@@ -339,4 +352,44 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
         }
     }
 
+    protected void btnIgnoredConfirm_Click(object sender, EventArgs e)
+    {
+        ApplicationDbContext dbContext = new ApplicationDbContext();
+        string LoggedInUserID = User.Identity.GetUserId();
+        List<Grievance> Grievances = (from Grievance gr in dbContext.Grievances
+                                      where gr.Complainant.Id == LoggedInUserID
+                                      orderby gr.GrievanceID ascending
+                                      select gr).ToList();
+        foreach (GridViewRow row in grdComplaints.Rows)
+        {
+            CheckBox chk = (CheckBox)row.FindControl("ckbSelectGrievance");
+
+            if (chk.Checked)
+            {
+                foreach (Grievance gr in Grievances)
+                {
+                    long checkedGrievanceID = Convert.ToInt64(row.Cells[1].Text);
+                    if (gr.GrievanceID == checkedGrievanceID)
+                    {
+                        gr.ResolutionStatus = Grievance.ResolutionStatuses.Flagged;
+
+                    }
+                }
+            }
+        }
+        try
+        {
+            dbContext.SaveChanges();
+            grdComplaints.DataSource = GetGrievances();
+            grdComplaints.DataBind();
+            ErrorPlaceHolder.Visible = false;
+            SuccessMessage.Text = "Selected complaint(s) have been flagged and will be reviewed by the Auditor as soon as possible.";
+            SuccessPlaceHolder.Visible = true;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.Text = ex.Message;
+            ErrorPlaceHolder.Visible = true;
+        }
+    }
 }

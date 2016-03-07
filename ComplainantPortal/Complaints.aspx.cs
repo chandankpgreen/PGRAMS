@@ -50,7 +50,7 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
                         DateLogged = DateTime.Now,
                         Comments = txtComments.Text,
                         GrievanceType = (Grievance.GrievanceTypes)Convert.ToInt16(ddlComplaintType.SelectedValue),
-                        ResolutionStatus = Grievance.ResolutionStatuses.Started,
+                        ResolutionStatus = Grievance.ResolutionStatuses.Created,
                         Complainant = LoggedInComplainant
                     };
                    

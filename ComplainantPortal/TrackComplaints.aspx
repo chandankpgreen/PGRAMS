@@ -102,6 +102,26 @@
 
       </div>
     </div>
+      <div id="modal-Ignored" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Confirmation</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to flag this grievance?</p>
+          </div>
+          <div class="modal-footer">
+            <asp:Button ID="btnIgnoredConfirm" runat="server" CssClass="btn btn-primary" Text="Yes" OnClick="btnIgnoredConfirm_Click"/>
+              <div class="btn btn-danger" data-dismiss="modal">No</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
     <script type="text/javascript">
         
         $(document).ready(function () {

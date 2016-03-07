@@ -14,7 +14,6 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
         if (!Page.IsPostBack)
         {
             List<Grievance> Grievances = GetGrievances().Where(x => (x.ResolutionStatus == Grievance.ResolutionStatuses.Created)).ToList();
-            grdComplaints.DataSource = Grievances;
             grdComplaints.DataBind();
         }
     }
@@ -33,8 +32,9 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
     protected List<Grievance> GetGrievances(string sortexpression = "GrievanceID", SortDirection sortdirection = SortDirection.Ascending)
     {
         ApplicationDbContext dbContext = new ApplicationDbContext();
+        string LoggedInUserID = User.Identity.GetUserId();
         List<Grievance> GrievanceList = null;
-        int[] InAudit = { 1, 2, 3, 11, 12, 13};
+        int[] InAudit = { 4,6,7,8,9};
         switch (sortexpression)
         {
             case "GrievanceID":
@@ -225,7 +225,7 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
     
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        int[] InAudit = { 1, 2, 3 ,11, 12, 13};
+        int[] InAudit = { 4,6,7,8,9};
         ApplicationDbContext dbContext = new ApplicationDbContext();
         string LoggedInUserID = User.Identity.GetUserId();
         long GrievanceID;
@@ -264,119 +264,5 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
         List<Grievance> Grievances = GetGrievances().Where(x => (x.ResolutionStatus == (Grievance.ResolutionStatuses)(Convert.ToInt16(ddlResolutionStatus.SelectedValue)))).ToList();
         grdComplaints.DataSource = Grievances;
         grdComplaints.DataBind();
-    }
-    protected void btnReviewedConfirm_Click(object sender, EventArgs e)
-    {
-        ApplicationDbContext dbContext = new ApplicationDbContext();
-        List<Grievance> Grievances = (from Grievance gr in dbContext.Grievances
-                                      orderby gr.GrievanceID ascending
-                                      select gr).ToList();
-        foreach (GridViewRow row in grdComplaints.Rows)
-        {
-            CheckBox chk = (CheckBox)row.FindControl("ckbSelectGrievance");
-
-            if (chk.Checked)
-            {
-                foreach (Grievance gr in Grievances)
-                {
-                    long checkedGrievanceID = Convert.ToInt64(row.Cells[1].Text);
-                    if (gr.GrievanceID == checkedGrievanceID)
-                    {
-                        gr.ResolutionStatus = Grievance.ResolutionStatuses.InReview;
-
-                    }
-                }
-            }
-        }
-        try
-        {
-            dbContext.SaveChanges();
-            grdComplaints.DataSource = GetGrievances().Where(x => (x.ResolutionStatus == (Grievance.ResolutionStatuses)(Convert.ToInt16(ddlResolutionStatus.SelectedValue)))).ToList();
-            grdComplaints.DataBind();
-            ErrorPlaceHolder.Visible = false;
-            SuccessMessage.Text = "Selected complaint(s) have been move to In Review status.";
-            SuccessPlaceHolder.Visible = true;
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage.Text = ex.Message;
-            ErrorPlaceHolder.Visible = true;
-        }
-    }
-    protected void btnSurveyedConfirm_Click(object sender, EventArgs e)
-    {
-        ApplicationDbContext dbContext = new ApplicationDbContext();
-        List<Grievance> Grievances = (from Grievance gr in dbContext.Grievances
-                                      orderby gr.GrievanceID ascending
-                                      select gr).ToList();
-        foreach (GridViewRow row in grdComplaints.Rows)
-        {
-            CheckBox chk = (CheckBox)row.FindControl("ckbSelectGrievance");
-
-            if (chk.Checked)
-            {
-                foreach (Grievance gr in Grievances)
-                {
-                    long checkedGrievanceID = Convert.ToInt64(row.Cells[1].Text);
-                    if (gr.GrievanceID == checkedGrievanceID)
-                    {
-                        gr.ResolutionStatus = Grievance.ResolutionStatuses.Surveyed;
-
-                    }
-                }
-            }
-        }
-        try
-        {
-            dbContext.SaveChanges();
-            grdComplaints.DataSource = GetGrievances().Where(x => (x.ResolutionStatus == (Grievance.ResolutionStatuses)(Convert.ToInt16(ddlResolutionStatus.SelectedValue)))).ToList();
-            grdComplaints.DataBind();
-            ErrorPlaceHolder.Visible = false;
-            SuccessMessage.Text = "Selected complaint(s) have been marked as Surveyed.";
-            SuccessPlaceHolder.Visible = true;
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage.Text = ex.Message;
-            ErrorPlaceHolder.Visible = true;
-        }
-    }
-    protected void btnApprovedConfirm_Click(object sender, EventArgs e)
-    {
-        ApplicationDbContext dbContext = new ApplicationDbContext();
-        List<Grievance> Grievances = (from Grievance gr in dbContext.Grievances
-                                      orderby gr.GrievanceID ascending
-                                      select gr).ToList();
-        foreach (GridViewRow row in grdComplaints.Rows)
-        {
-            CheckBox chk = (CheckBox)row.FindControl("ckbSelectGrievance");
-
-            if (chk.Checked)
-            {
-                foreach (Grievance gr in Grievances)
-                {
-                    long checkedGrievanceID = Convert.ToInt64(row.Cells[1].Text);
-                    if (gr.GrievanceID == checkedGrievanceID)
-                    {
-                        gr.ResolutionStatus = Grievance.ResolutionStatuses.Approved;
-
-                    }
-                }
-            }
-        }
-        try
-        {
-            dbContext.SaveChanges();
-            grdComplaints.DataSource = GetGrievances().Where(x => (x.ResolutionStatus == (Grievance.ResolutionStatuses)(Convert.ToInt16(ddlResolutionStatus.SelectedValue)))).ToList();
-            grdComplaints.DataBind();
-            ErrorPlaceHolder.Visible = false;
-            SuccessMessage.Text = "Selected complaint(s) have been marked as Approved.";
-            SuccessPlaceHolder.Visible = true;
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage.Text = ex.Message;
-            ErrorPlaceHolder.Visible = true;
-        }
     }
 }

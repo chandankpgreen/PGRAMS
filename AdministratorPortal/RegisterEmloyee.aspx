@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="RegisterEmloyee.aspx.cs" Inherits="Administration_RegisterEmloyee" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Administrator.master" AutoEventWireup="true" CodeFile="RegisterEmloyee.aspx.cs" Inherits="Administration_RegisterEmloyee" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <h2>Register an Employee</h2>
@@ -10,7 +10,7 @@
     </p>
 
     <div class="form-horizontal">
-        <h4>Create a new account.</h4>
+        <h4>Create a new Employee account.</h4>
         <hr />
         <div class="form-group">
             <asp:Label runat="server" AssociatedControlID="UserName" CssClass="col-md-2 control-label">User name<span class="required-asterisk">*</span></asp:Label>
