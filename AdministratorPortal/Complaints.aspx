@@ -23,7 +23,6 @@
                     <asp:ListItem Value="7">Started working on the Complaint</asp:ListItem>
                     <asp:ListItem Value="8">Complaint Resolution in Progress</asp:ListItem>
                     <asp:ListItem Value="9">Completed implementation</asp:ListItem>
-                    <asp:ListItem Value="6">Cancelled(For lack of funds/inventory/manpower etc.)</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -34,14 +33,10 @@
     <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints found!" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" OnRowDataBound="grdComplaints_RowDataBound" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC" AllowSorting="True" OnPageIndexChanging="grdComplaints_PageIndexChanging" OnRowCreated="grdComplaints_RowCreated" OnSorting="grdComplaints_Sorting">
         <AlternatingRowStyle BackColor="#F2DEDE" />
         <Columns>
-            <asp:TemplateField>
-                <ItemTemplate>
-                    <asp:Button ID="btnCreateTasks" runat="server" Text="Create Tasks" />
-                </ItemTemplate>
-            </asp:TemplateField>
+            
             <asp:TemplateField ShowHeader="False">
                 <ItemTemplate>
-                    <asp:Button ID="btnViewTasks" runat="server" Text="View Tasks" />
+                    <asp:Button ID="btnCreateViewTasks" runat="server" Text="Create and View Tasks" PostBackUrl='<%# string.Format("~/AdministratorPortal/Tasks.aspx?GrievanceID={0}", Eval("GrievanceID").ToString())%>' />
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:BoundField DataField="GrievanceID" HeaderText="Grievance ID" SortExpression="GrievanceID">

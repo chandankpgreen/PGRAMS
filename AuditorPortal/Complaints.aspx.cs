@@ -379,4 +379,50 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
             ErrorPlaceHolder.Visible = true;
         }
     }
+    protected void btnRejectConfirm_Click(object sender, EventArgs e)
+    {
+        ApplicationDbContext dbContext = new ApplicationDbContext();
+        List<Grievance> Grievances = (from Grievance gr in dbContext.Grievances
+                                      orderby gr.GrievanceID ascending
+                                      select gr).ToList();
+        foreach (GridViewRow row in grdComplaints.Rows)
+        {
+            CheckBox chk = (CheckBox)row.FindControl("ckbSelectGrievance");
+
+            if (chk.Checked)
+            {
+                foreach (Grievance gr in Grievances)
+                {
+                    long checkedGrievanceID = Convert.ToInt64(row.Cells[1].Text);
+                    if (gr.GrievanceID == checkedGrievanceID)
+                    {
+                        gr.ResolutionStatus = Grievance.ResolutionStatuses.Rejected;
+
+                    }
+                }
+            }
+        }
+        try
+        {
+            dbContext.SaveChanges();
+            grdComplaints.DataSource = GetGrievances().Where(x => (x.ResolutionStatus == (Grievance.ResolutionStatuses)(Convert.ToInt16(ddlResolutionStatus.SelectedValue)))).ToList();
+            grdComplaints.DataBind();
+            ErrorPlaceHolder.Visible = false;
+            SuccessMessage.Text = "Selected complaint(s) have been Rejected.";
+            SuccessPlaceHolder.Visible = true;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.Text = ex.Message;
+            ErrorPlaceHolder.Visible = true;
+        }
+    }
+    protected void grdComplaints_PageIndexChanging1(object sender, GridViewPageEventArgs e)
+    {
+
+    }
+    protected void grdComplaints_Sorting1(object sender, GridViewSortEventArgs e)
+    {
+
+    }
 }

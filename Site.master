@@ -132,8 +132,8 @@
                             <li class="site-navbar-dropdown">
                                 <a href="#">Your Opinion &#9662;</a>
                                 <ul class="site-navbar-dropdown-content">
-                                    <li><a href="#">Suggestions</a></li>
-                                    <li><a href="#">Feedback</a></li>
+                                    <li><a href=<%:ResolveClientUrl("~/ComplainantPortal/Suggestions.aspx")%>>Suggestions</a></li>
+                                    <li><a href=<%:ResolveClientUrl("~/ComplainantPortal/Feedback.aspx")%>>Feedback</a></li>
                                 </ul>
                             </li>
                         </ul>

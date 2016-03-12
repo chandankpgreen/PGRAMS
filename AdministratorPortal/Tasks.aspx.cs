@@ -1,14 +1,97 @@
-﻿using System;
+﻿using PGRAMS_CS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity;
 
 public partial class AdministratorPortal_Tasks : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!Page.IsPostBack)
+        {
 
+            BindComplaints();
+            BindEmployees();
+            BindTasks();
+
+            string GrievanceIDStr = Request.QueryString["GrievanceID"];
+            long GrievanceID;
+            if (long.TryParse(GrievanceIDStr, out GrievanceID))
+            {
+                ddlComplaints.SelectedValue = GrievanceID.ToString();
+            }
+        }
+    }
+    protected void BindComplaints()
+    {
+        ApplicationDbContext dbContext = new ApplicationDbContext();
+        int[] inAdmin = { 4, 6, 7, 8, 9 };
+        List<Grievance> GrievanceList = (from Grievance gr in dbContext.Grievances
+                                         where inAdmin.Contains((int)gr.ResolutionStatus)
+                                         orderby gr.GrievanceID ascending
+                                         select gr).ToList();
+        ddlComplaints.DataSource = GrievanceList;
+        ddlComplaints.DataTextField = "GrievanceID";
+        ddlComplaints.DataValueField = "GrievanceID";
+        ddlComplaints.DataBind();
+    }
+    protected void BindEmployees()
+    {
+        ApplicationDbContext dbContext = new ApplicationDbContext();
+        var userMgr = new UserManager();
+
+        List<Employee> EmployeeList = (from Employee emp in dbContext.Users
+                                       where userMgr.IsInRole(emp.Id, "Employee")
+                                       && emp.Department == (from Grievance gr in dbContext.Grievances
+                                                             where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                                                             select gr.GrievanceType).FirstOrDefault()
+                                       orderby emp.EmployeeID
+                                       select emp).ToList();
+        foreach (Employee emp in EmployeeList)
+        {
+            ddlEmployee.Items.Add(new ListItem(emp.EmployeeID + " :" + emp.FirstName + " " + emp.LastName, emp.EmployeeID.ToString()));
+        }
+    }
+    protected void BindTasks()
+    {
+        using(  ApplicationDbContext dbContext = new ApplicationDbContext()){
+            List<ResolutionTask> resouoltionTasks = (from ResolutionTask rs in dbContext.ResolutionTasks
+                                                     where rs.Grievance.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                                                     select rs).ToList();
+            grdTasks.DataSource = resouoltionTasks;
+            grdTasks.DataBind();
+        }
+    }
+    protected void ddlComplaints_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindEmployees();
+    }
+    protected void btnCreate_Click(object sender, EventArgs e)
+    {
+        using (ApplicationDbContext dbContext = new ApplicationDbContext())
+        {
+            ResolutionTask task = new ResolutionTask()
+            {
+                TaskDescription = txtDescription.Text,
+                TaskBudget = Convert.ToDecimal(txtBudget.Text),
+                TargetStartDate = calStartDate.SelectedDate,
+                TargetCompletionDate = calCompletionDate.SelectedDate,
+                MenReqired = Convert.ToInt32(txtMenRequired.Text),
+                Comments = txtComments.Text,
+                Grievance = (from Grievance gr in dbContext.Grievances
+                             where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                             select gr).FirstOrDefault(),
+                Resolver = (from Employee emp in dbContext.Employees
+                            where emp.EmployeeID.ToString() == ddlEmployee.SelectedValue
+                            select emp).FirstOrDefault(),
+                Status = ResolutionTask.TaskStatus.ToBeStarted
+            };
+            dbContext.ResolutionTasks.Add(task);
+            dbContext.SaveChanges();
+        }
     }
 }

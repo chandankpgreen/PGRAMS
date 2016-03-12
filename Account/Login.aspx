@@ -34,7 +34,7 @@
                              <asp:Label runat="server" AssociatedControlID="rdUserRole" CssClass="col-md-3 control-label">Select your role</asp:Label>
                         <div class="col-md-8">
                             <asp:RadioButtonList ID="rdUserRole" runat="server" RepeatLayout="Flow">
-                                <asp:ListItem Value="Complainant">Citizen/Complainant</asp:ListItem>
+                                <asp:ListItem Value="Complainant" Selected="True">Citizen/Complainant</asp:ListItem>
                                 <asp:ListItem>Employee</asp:ListItem>
                                 <asp:ListItem>Administrator</asp:ListItem>
                                 <asp:ListItem>Auditor</asp:ListItem>

@@ -18,6 +18,7 @@
         <div ID="btnUnsatisfied"  class="btn btn-warning" title="Click this if you think the complaint was not resolved in a satisfactory way." >Shoddy Work, Not Satisfied</div>
         <div ID="btnIgnored"  class="btn btn-danger" title="Click this if you think the redressal department failed to take notice of this in time.">Did not start on time/Ignored</div>
     </div>
+    <asp:Button ID="btnClearFilter" runat="server" Text="Clear Filter" OnClick="btnClearFilter_Click" Visible="False" />
     <h4>Your Grievances Listed:</h4>
     <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints found!" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" OnRowDataBound="grdComplaints_RowDataBound" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC" AllowSorting="True" OnPageIndexChanging="grdComplaints_PageIndexChanging" OnRowCreated="grdComplaints_RowCreated" OnSorting="grdComplaints_Sorting">
         <AlternatingRowStyle BackColor="#F2DEDE" />
@@ -27,13 +28,13 @@
                     <asp:CheckBox ID="ckbSelectGrievance" runat="server" />
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:BoundField DataField="GrievanceID" HeaderText="Grievance ID" SortExpression="GrievanceID" >
+            <asp:BoundField DataField="GrievanceID" HeaderText="Complaint ID" SortExpression="GrievanceID" >
             <HeaderStyle Height="20px" VerticalAlign="Middle" Width="12%" HorizontalAlign="Center" Wrap="False" />
             </asp:BoundField>
-            <asp:BoundField DataField="GrievanceType" HeaderText="Grievance Type" SortExpression="GrievanceType" >
+            <asp:BoundField DataField="GrievanceType" HeaderText="Complaint Type" SortExpression="GrievanceType" >
             <HeaderStyle Width="11%" Wrap="False" />
             </asp:BoundField>
-            <asp:BoundField DataField="GrievanceDescription" HeaderText="Grievance Description" SortExpression="GrievanceDescription" >
+            <asp:BoundField DataField="GrievanceDescription" HeaderText="Complaint Description" SortExpression="GrievanceDescription" >
             <HeaderStyle Width="17%" Wrap="False" />
             </asp:BoundField>
             <asp:BoundField DataField="DateLogged" HeaderText="Date of Logging" SortExpression="DateLogged" >
@@ -123,6 +124,25 @@
       </div>
     </div>
     <script type="text/javascript">
+        function setButtonStatus(status) {
+            switch (status) {
+                case "Verified":
+                    $("#btnVerified").removeClass("disabled");
+                    $("#btnUnsatisfied").removeClass("disabled");
+                    $("#btnIgnored").addClass("disabled");
+                    break;
+                case "Ignored":
+                    $("#btnVerified").addClass("disabled");
+                    $("#btnUnsatisfied").addClass("disabled");
+                    $("#btnIgnored").removeClass("disabled");
+                    break;
+                default:
+                    $("#btnVerified").addClass("disabled");
+                    $("#btnUnsatisfied").addClass("disabled");
+                    $("#btnIgnored").addClass("disabled");
+                    break;
+            }
+        }
         
         $(document).ready(function () {
             var $selectionCheckboxes = $(".grid-grievances").find("input[type=checkbox]");
@@ -133,6 +153,27 @@
                     }
                 }).length > 0) {
                     $("#button-actions").removeClass("hidden");
+                    var enableverified = false;
+                    var enableunsatisfied = false;
+                    var enableignored = false;
+                    var $grievanceTableRows = $(".grid-grievances").find("tr:gt(0)");
+                    for (var i = 0; i < $grievanceTableRows.length; i++) {
+                        if ($grievanceTableRows.find("td:eq(6)").text == "Created") {
+                            enableignored = true;
+                        }
+                        else if ($grievanceTableRows.find("td:eq(6)").text == "Completed implementation") {
+                            enableverified = true;
+                        }
+                    }
+                    if (enableignored && enableverified) {
+                        setButtonStatus("none");
+                    }
+                    else if (enableignored) {
+                        setButtonStatus("Ignored");
+                    }
+                    else if (enableverified) {
+                        setButtonStatus("Verified");
+                    }
                 }
                 else {
                     $("#button-actions").addClass("hidden");

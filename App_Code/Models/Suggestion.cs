@@ -19,7 +19,8 @@ namespace PGRAMS_CS
 
         public virtual Complainant Complainant { get; set; }
         public Grievance.GrievanceTypes Department { get; set; }
-        public string Comment { get; set; }
+        public string Description { get; set; }
+        public DateTime DateLogged { get; set; }
 
         public Suggestion()
         {

@@ -68,11 +68,10 @@
                                 <a href="#">Complaints &#9662;</a>
                                 <ul class="site-navbar-dropdown-content">
                                     <li><a href=<%:ResolveClientUrl("~/AuditorPortal/Complaints.aspx")%>>Complaints to Address</a></li>
-                                    <li><a href=<%:ResolveClientUrl("~/AuditorPortal/AuditHistory.aspx")%>>Audit History</a></li>
                                 </ul>
                             </li>
                             <li class="site-navbar-dropdown">
-                                <a href=<%:ResolveClientUrl("~/AuditorPortal/ResolutionTasks.aspx")%>>Resolution Tasks &#9662;</a>
+                                <a href=<%:ResolveClientUrl("~/AuditorPortal/Reports.aspx")%>>Reports</a>
                             </li>
                         </ul>
                     </div>

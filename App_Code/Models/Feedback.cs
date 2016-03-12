@@ -18,9 +18,9 @@ namespace PGRAMS_CS
         public long FeedbackID {get; set;}
 
         public virtual Grievance Grievance { get; set;}
-        public Grievance.GrievanceTypes Department { get; set; }
         public string Comment { get; set; }
         public virtual Complainant Complainant { get; set; }
+        public DateTime DateLogged { get; set; }
 
         public Feedback()
         {

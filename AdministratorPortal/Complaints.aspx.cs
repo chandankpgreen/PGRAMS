@@ -13,7 +13,7 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
     {
         if (!Page.IsPostBack)
         {
-            List<Grievance> Grievances = GetGrievances().Where(x => (x.ResolutionStatus == Grievance.ResolutionStatuses.Created)).ToList();
+            List<Grievance> Grievances = GetGrievances().Where(x => (x.ResolutionStatus == Grievance.ResolutionStatuses.Approved)).ToList();
             grdComplaints.DataBind();
         }
     }
@@ -217,12 +217,6 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
         }
     }
 
-    protected void btnShoddyConfirm_Click(object sender, EventArgs e)
-    {
-      
-
-    }
-    
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         int[] InAudit = { 4,6,7,8,9};

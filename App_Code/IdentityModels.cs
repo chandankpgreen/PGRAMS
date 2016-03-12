@@ -32,6 +32,7 @@ namespace PGRAMS_CS
         public DbSet<Grievance> Grievances { get; set; }
         public DbSet<Suggestion> Suggestions { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<ResolutionTask> ResolutionTasks { get; set; }
     }
 
     #region Helpers

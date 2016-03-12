@@ -25,7 +25,7 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
             }
         }
     }
- 
+
     protected void grdComplaints_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
@@ -46,6 +46,12 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
                     chk.Visible = false;
                     break;
             }
+            DateTime datelogged = Convert.ToDateTime(e.Row.Cells[4].Text);
+            long days = (long)(DateTime.Now - datelogged).TotalDays;
+            if (days >= 5 && e.Row.Cells[6].Text == "Created")
+            {
+                chk.Visible = true;
+            }
         }
     }
     protected List<Grievance> GetGrievances(string sortexpression = "GrievanceID", SortDirection sortdirection = SortDirection.Ascending)
@@ -53,93 +59,93 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
         ApplicationDbContext dbContext = new ApplicationDbContext();
         string LoggedInUserID = User.Identity.GetUserId();
         List<Grievance> GrievanceList = null;
-        int[] InComplainant = { 1, 2, 3, 10, 11, 12, 13 };
+        int[] InComplainant = { 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13 };
 
         switch (sortexpression)
         {
             case "GrievanceID":
-               if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceID ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceID descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceID ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceID descending
+                                     select gr).ToList();
                 break;
             case "GrievanceType":
-                  if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceType ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceType descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceType ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceType descending
+                                     select gr).ToList();
                 break;
             case "GrievanceDescription":
-                  if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceDescription ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceDescription descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceDescription ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceDescription descending
+                                     select gr).ToList();
                 break;
             case "DateLogged":
-                   if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.DateLogged ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.DateLogged descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.DateLogged ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.DateLogged descending
+                                     select gr).ToList();
                 break;
             case "TargetCompletionDate":
-                   if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.TargetCompletionDate ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.TargetCompletionDate descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.TargetCompletionDate ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.TargetCompletionDate descending
+                                     select gr).ToList();
                 break;
             case "ResolutionStatus":
-                  if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.ResolutionStatus ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.ResolutionStatus descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.ResolutionStatus ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.ResolutionStatus descending
+                                     select gr).ToList();
                 break;
             default:
-                  if (sortdirection == SortDirection.Ascending)
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceID ascending
-                             select gr).ToList();
-               else
-                     GrievanceList = (from Grievance gr in dbContext.Grievances
-                             where gr.Complainant.Id == LoggedInUserID
-                             orderby gr.GrievanceID descending
-                             select gr).ToList();
+                if (sortdirection == SortDirection.Ascending)
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceID ascending
+                                     select gr).ToList();
+                else
+                    GrievanceList = (from Grievance gr in dbContext.Grievances
+                                     where gr.Complainant.Id == LoggedInUserID
+                                     orderby gr.GrievanceID descending
+                                     select gr).ToList();
                 break;
         }
 
@@ -161,7 +167,8 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
             gridsortdirection = (SortDirection)this.ViewState["sortdirection"];
             gridsortdirection = gridsortdirection.Equals(SortDirection.Ascending) ? SortDirection.Descending : SortDirection.Ascending;
         }
-        else{
+        else
+        {
             gridsortdirection = SortDirection.Ascending;
         }
         this.ViewState["sortdirection"] = gridsortdirection;
@@ -198,7 +205,7 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
         sortImage.Height = 20;
         sortImage.Width = 15;
         sortImage.ImageAlign = ImageAlign.Right;
-        if (this.ViewState["sortdirection"]==null || (SortDirection)this.ViewState["sortdirection"] == SortDirection.Ascending)
+        if (this.ViewState["sortdirection"] == null || (SortDirection)this.ViewState["sortdirection"] == SortDirection.Ascending)
         {
             sortImage.ImageUrl = "~/Content/images/ascending.png";
             sortImage.AlternateText = "Ascending Order";
@@ -231,7 +238,7 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
                 AddSortImage(sortColumnIndex, e.Row);
             }
         }
-       
+
     }
 
     protected void btnShoddyConfirm_Click(object sender, EventArgs e)
@@ -239,9 +246,9 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
         ApplicationDbContext dbContext = new ApplicationDbContext();
         string LoggedInUserID = User.Identity.GetUserId();
         List<Grievance> Grievances = (from Grievance gr in dbContext.Grievances
-                         where gr.Complainant.Id == LoggedInUserID
-                         orderby gr.GrievanceID ascending
-                         select gr).ToList();
+                                      where gr.Complainant.Id == LoggedInUserID
+                                      orderby gr.GrievanceID ascending
+                                      select gr).ToList();
         foreach (GridViewRow row in grdComplaints.Rows)
         {
             CheckBox chk = (CheckBox)row.FindControl("ckbSelectGrievance");
@@ -254,12 +261,13 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
                     if (gr.GrievanceID == checkedGrievanceID)
                     {
                         gr.ResolutionStatus = Grievance.ResolutionStatuses.Reopened;
-                        
+
                     }
                 }
             }
         }
-        try {
+        try
+        {
             dbContext.SaveChanges();
             grdComplaints.DataSource = GetGrievances();
             grdComplaints.DataBind();
@@ -267,11 +275,12 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
             SuccessMessage.Text = "Selected complaint(s) have been reopened and will be reviewed by the Administrator as soon as possible.";
             SuccessPlaceHolder.Visible = true;
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             ErrorMessage.Text = ex.Message;
             ErrorPlaceHolder.Visible = true;
         }
-        
+
     }
     protected void btnVerified_Click(object sender, EventArgs e)
     {
@@ -313,44 +322,7 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
             ErrorPlaceHolder.Visible = true;
         }
     }
-    protected void btnSearch_Click(object sender, EventArgs e)
-    {
-        ApplicationDbContext dbContext = new ApplicationDbContext();
-        string LoggedInUserID = User.Identity.GetUserId();
-        long GrievanceID;
-        List<Grievance> Grievances;
-        if (long.TryParse(txtSearch.Text, out GrievanceID))
-        {
-            Grievances = (from Grievance gr in dbContext.Grievances
-                                          where (gr.Complainant.Id == LoggedInUserID
-                                          && gr.GrievanceID.ToString().Contains(GrievanceID.ToString()))
-                                          orderby gr.GrievanceID ascending
-                                          select gr).ToList();
-        }
-        else
-        {
-            List<Grievance> AllGrievance = (from Grievance gr in dbContext.Grievances
-                                            where (gr.Complainant.Id == LoggedInUserID)
-                                                select gr).ToList();
-            Grievances = new List<Grievance>();
-            foreach (Grievance gr in AllGrievance)
-            {
-                if (gr.Complainant.Id == LoggedInUserID)
-                {
-                    if(gr.GrievanceDescription.ToString().IndexOf(txtSearch.Text,StringComparison.CurrentCultureIgnoreCase)>=0
-                          || (gr.GrievanceType.GetDescription().IndexOf(txtSearch.Text, StringComparison.CurrentCultureIgnoreCase) >=0))
-                    {
-                        Grievances.Add(gr);
-                    }
-                }
-            }
-        }
-        grdComplaints.DataSource = Grievances;
-        grdComplaints.DataBind();
-        if (this.ViewState["sortexpression"] != null) {
-            grdComplaints.Sort(this.ViewState["sortexpression"].ToString(), (SortDirection)this.ViewState["sortdirection"]);
-        }
-    }
+   
 
     protected void btnIgnoredConfirm_Click(object sender, EventArgs e)
     {
@@ -390,6 +362,57 @@ public partial class ComplainantPortal_TrackComplaints : System.Web.UI.Page
         {
             ErrorMessage.Text = ex.Message;
             ErrorPlaceHolder.Visible = true;
+        }
+    }
+    protected void btnClearFilter_Click(object sender, EventArgs e)
+    {
+        txtSearch.Text = "";
+        btnClearFilter.Visible = false;
+        GetComplaints();
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        btnClearFilter.Visible = !string.IsNullOrWhiteSpace(txtSearch.Text);
+        GetComplaints();
+    }
+    protected void GetComplaints()
+    {
+        ApplicationDbContext dbContext = new ApplicationDbContext();
+        string LoggedInUserID = User.Identity.GetUserId();
+        long GrievanceID;
+        List<Grievance> Grievances;
+
+        if (long.TryParse(txtSearch.Text, out GrievanceID))
+        {
+            Grievances = (from Grievance gr in dbContext.Grievances
+                          where (gr.Complainant.Id == LoggedInUserID
+                          && gr.GrievanceID.ToString().Contains(GrievanceID.ToString()))
+                          orderby gr.GrievanceID ascending
+                          select gr).ToList();
+        }
+        else
+        {
+            List<Grievance> AllGrievance = (from Grievance gr in dbContext.Grievances
+                                            where (gr.Complainant.Id == LoggedInUserID)
+                                            select gr).ToList();
+            Grievances = new List<Grievance>();
+            foreach (Grievance gr in AllGrievance)
+            {
+                if (gr.Complainant.Id == LoggedInUserID)
+                {
+                    if (gr.GrievanceDescription.ToString().IndexOf(txtSearch.Text, StringComparison.CurrentCultureIgnoreCase) >= 0
+                          || (gr.GrievanceType.GetDescription().IndexOf(txtSearch.Text, StringComparison.CurrentCultureIgnoreCase) >= 0))
+                    {
+                        Grievances.Add(gr);
+                    }
+                }
+            }
+        }
+        grdComplaints.DataSource = Grievances;
+        grdComplaints.DataBind();
+        if (this.ViewState["sortexpression"] != null)
+        {
+            grdComplaints.Sort(this.ViewState["sortexpression"].ToString(), (SortDirection)this.ViewState["sortdirection"]);
         }
     }
 }

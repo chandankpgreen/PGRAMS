@@ -34,9 +34,10 @@
         <div id="btnMoveToReview" class="btn btn-success">Move to reviewed</div>
         <div id="btnMoveToSurveyed" class="btn btn-success">Move to surveyed</div>
         <div id="btnMoveToApproved" class="btn btn-success">Approve Complaint</div>
+        <div id="btnMoveToRejected" class="btn btn-danger">Reject Complaint</div>
     </div>
     <h4>Your Grievances Listed:</h4>
-    <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints found!" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" OnRowDataBound="grdComplaints_RowDataBound" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC" AllowSorting="True" OnPageIndexChanging="grdComplaints_PageIndexChanging" OnRowCreated="grdComplaints_RowCreated" OnSorting="grdComplaints_Sorting">
+    <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints found!" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC" AllowSorting="True" OnPageIndexChanging="grdComplaints_PageIndexChanging1" OnSorting="grdComplaints_Sorting1">
         <AlternatingRowStyle BackColor="#F2DEDE" />
         <Columns>
             <asp:TemplateField>
@@ -139,18 +140,68 @@
 
         </div>
     </div>
+    <div id="modal-Rejected" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to reject these Complaint(s)?</p>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button ID="btnRejectConfirm" runat="server" CssClass="btn btn-primary" Text="Yes" OnClick="btnRejectConfirm_Click" />
+                    <div class="btn btn-danger" data-dismiss="modal">No</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <script type="text/javascript">
+        function SetButtonStatus() {
+        
+            switch(parseInt($("#<%=ddlResolutionStatus.ClientID%>").val())){
+                case 1:
+                case 11:
+                case 12:
+                case 13:
+                    $("#btnMoveToReview").removeClass("disabled");
+                    $("#btnMoveToSurveyed").addClass("disabled");
+                    $("#btnMoveToApproved").addClass("disabled");
+                    $("#btnMoveToRejected").addClass("disabled");
+                    break;
+                case 2:
+                    $("#btnMoveToReview").addClass("disabled");
+                    $("#btnMoveToSurveyed").removeClass("disabled");
+                    $("#btnMoveToApproved").addClass("disabled");
+                    $("#btnMoveToRejected").addClass("disabled");
+                    break;
+                case 3:
+                    $("#btnMoveToReview").addClass("disabled");
+                    $("#btnMoveToSurveyed").addClass("disabled");
+                    $("#btnMoveToApproved").removeClass("disabled");
+                    $("#btnMoveToRejected").removeClass("disabled");
+                default:                                                                        
+                    $("#btnMoveToReview").addClass("disabled");
+                    $("#btnMoveToSurveyed").addClass("disabled");
+                    $("#btnMoveToApproved").addClass("disabled");
+                    break;
+            }
+        }
 
         $(document).ready(function () {
-            var $selectionCheckboxes = $(".grid-grievances").find("input[type=checkbox]");
+            var $selectionCheckboxes = $("#<%=grdComplaints.ClientID%>").find("input[type=checkbox]");
             $selectionCheckboxes.off("change").on("change", function () {
                 if ($selectionCheckboxes.filter(function () {
                     if ($(this).prop("checked")) {
                         return true;
                 }
                 }).length > 0) {
-                    var $parentTr = $($(this).parents("tr")[0]);
                     $("#button-actions").removeClass("hidden");
+                    SetButtonStatus();
                 }
                 else {
                     $("#button-actions").addClass("hidden");
