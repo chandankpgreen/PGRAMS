@@ -37,7 +37,7 @@
         <div id="btnMoveToRejected" class="btn btn-danger">Reject Complaint</div>
     </div>
     <h4>Your Grievances Listed:</h4>
-    <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints found!" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC" AllowSorting="True" OnPageIndexChanging="grdComplaints_PageIndexChanging1" OnSorting="grdComplaints_Sorting1">
+    <asp:GridView ID="grdComplaints" runat="server" BackColor="#FCF8E3" CellPadding="5" AllowPaging="True" EmptyDataText="No Complaints found!" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC" AllowSorting="True" OnPageIndexChanging="grdComplaints_PageIndexChanging" OnSorting="grdComplaints_Sorting">
         <AlternatingRowStyle BackColor="#F2DEDE" />
         <Columns>
             <asp:TemplateField>
@@ -60,7 +60,7 @@
             <asp:BoundField DataField="TargetCompletionDate" HeaderText="Target Completion Date" SortExpression="TargetCompletionDate">
                 <HeaderStyle Width="18%" Wrap="False" />
             </asp:BoundField>
-            <asp:BoundField DataField="ResolutionStatus" HeaderText="Status" SortExpression="ResolutionStatus">
+            <asp:BoundField DataField="ResolutionStatus" HeaderText="Status">
                 <HeaderStyle Width="15%" Wrap="False" />
             </asp:BoundField>
             <asp:BoundField DataField="Comments" HeaderText="Comments" SortExpression="Comments">
@@ -184,10 +184,12 @@
                     $("#btnMoveToSurveyed").addClass("disabled");
                     $("#btnMoveToApproved").removeClass("disabled");
                     $("#btnMoveToRejected").removeClass("disabled");
+                    break;
                 default:                                                                        
                     $("#btnMoveToReview").addClass("disabled");
                     $("#btnMoveToSurveyed").addClass("disabled");
                     $("#btnMoveToApproved").addClass("disabled");
+                    $("#btnMoveToRejected").addClass("disabled");
                     break;
             }
         }
@@ -216,6 +218,9 @@
             });
             $("#btnMoveToApproved").off("click").on("click", function () {
                 $("#modal-Approved").modal("show");
+            });
+            $("#btnMoveToRejected").off("click").on("click", function () {
+                $("#modal-Rejected").modal("show");
             });
         });
     </script>

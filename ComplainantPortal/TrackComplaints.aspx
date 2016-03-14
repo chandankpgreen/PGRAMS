@@ -145,7 +145,7 @@
         }
         
         $(document).ready(function () {
-            var $selectionCheckboxes = $(".grid-grievances").find("input[type=checkbox]");
+            var $selectionCheckboxes = $("#<%=grdComplaints.ClientID%>").find("input[type=checkbox]");
             $selectionCheckboxes.off("change").on("change", function () {
                 if ($selectionCheckboxes.filter(function () {
                     if ($(this).prop("checked")) {
@@ -156,7 +156,7 @@
                     var enableverified = false;
                     var enableunsatisfied = false;
                     var enableignored = false;
-                    var $grievanceTableRows = $(".grid-grievances").find("tr:gt(0)");
+                    var $grievanceTableRows = $("#<%=grdComplaints.ClientID%>").find("tr:gt(0)");
                     for (var i = 0; i < $grievanceTableRows.length; i++) {
                         if ($grievanceTableRows.find("td:eq(6)").text == "Created") {
                             enableignored = true;

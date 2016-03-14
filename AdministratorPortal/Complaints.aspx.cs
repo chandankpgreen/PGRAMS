@@ -14,6 +14,7 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
         if (!Page.IsPostBack)
         {
             List<Grievance> Grievances = GetGrievances().Where(x => (x.ResolutionStatus == Grievance.ResolutionStatuses.Approved)).ToList();
+            grdComplaints.DataSource = Grievances;
             grdComplaints.DataBind();
         }
     }

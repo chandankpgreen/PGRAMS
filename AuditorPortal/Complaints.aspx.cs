@@ -417,12 +417,5 @@ public partial class AuditorPortal_Complaints : System.Web.UI.Page
             ErrorPlaceHolder.Visible = true;
         }
     }
-    protected void grdComplaints_PageIndexChanging1(object sender, GridViewPageEventArgs e)
-    {
 
-    }
-    protected void grdComplaints_Sorting1(object sender, GridViewSortEventArgs e)
-    {
-
-    }
 }

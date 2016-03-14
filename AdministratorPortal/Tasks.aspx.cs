@@ -44,21 +44,24 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
         ApplicationDbContext dbContext = new ApplicationDbContext();
         var userMgr = new UserManager();
 
-        List<Employee> EmployeeList = (from Employee emp in dbContext.Users
-                                       where userMgr.IsInRole(emp.Id, "Employee")
-                                       && emp.Department == (from Grievance gr in dbContext.Grievances
+        List<Employee> EmployeeList = (from Employee emp in dbContext.Employees
+                                       where emp.Department == (from Grievance gr in dbContext.Grievances
                                                              where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
                                                              select gr.GrievanceType).FirstOrDefault()
                                        orderby emp.EmployeeID
                                        select emp).ToList();
         foreach (Employee emp in EmployeeList)
         {
-            ddlEmployee.Items.Add(new ListItem(emp.EmployeeID + " :" + emp.FirstName + " " + emp.LastName, emp.EmployeeID.ToString()));
+            if (userMgr.IsInRole(emp.Id, "Employee"))
+            {
+                ddlEmployee.Items.Add(new ListItem(emp.EmployeeID + " :" + emp.FirstName + " " + emp.LastName, emp.EmployeeID.ToString()));
+            }
         }
     }
     protected void BindTasks()
     {
-        using(  ApplicationDbContext dbContext = new ApplicationDbContext()){
+        using (ApplicationDbContext dbContext = new ApplicationDbContext())
+        {
             List<ResolutionTask> resouoltionTasks = (from ResolutionTask rs in dbContext.ResolutionTasks
                                                      where rs.Grievance.GrievanceID.ToString() == ddlComplaints.SelectedValue
                                                      select rs).ToList();
@@ -74,17 +77,18 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
     {
         using (ApplicationDbContext dbContext = new ApplicationDbContext())
         {
+            Grievance griev = (from Grievance gr in dbContext.Grievances
+                               where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                               select gr).FirstOrDefault();
             ResolutionTask task = new ResolutionTask()
             {
                 TaskDescription = txtDescription.Text,
                 TaskBudget = Convert.ToDecimal(txtBudget.Text),
-                TargetStartDate = calStartDate.SelectedDate,
-                TargetCompletionDate = calCompletionDate.SelectedDate,
+                TargetStartDate = Convert.ToDateTime(txtTargetStartDate.Text),
+                TargetCompletionDate =Convert.ToDateTime(txtTargetCompletionDate.Text),
                 MenReqired = Convert.ToInt32(txtMenRequired.Text),
                 Comments = txtComments.Text,
-                Grievance = (from Grievance gr in dbContext.Grievances
-                             where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
-                             select gr).FirstOrDefault(),
+                Grievance = griev,
                 Resolver = (from Employee emp in dbContext.Employees
                             where emp.EmployeeID.ToString() == ddlEmployee.SelectedValue
                             select emp).FirstOrDefault(),
@@ -92,6 +96,27 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
             };
             dbContext.ResolutionTasks.Add(task);
             dbContext.SaveChanges();
+
+            var taskList = (from Grievance gr in dbContext.Grievances
+                            where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                            select gr.ResolutionTasks);
+            List<ResolutionTask> ResTaskList = taskList.Cast<ResolutionTask>().ToList();
+            if (ResTaskList.Count > 0)
+            {
+                DateTime LatestDateForATask = ResTaskList[0].TargetCompletionDate;
+
+                foreach (ResolutionTask restask in ResTaskList)
+                {
+                    if (restask.TargetCompletionDate > LatestDateForATask)
+                    {
+                        LatestDateForATask = restask.TargetCompletionDate;
+                    }
+                }
+                griev.TargetCompletionDate = LatestDateForATask;
+                dbContext.SaveChanges();
+
+            }
         }
+
     }
 }

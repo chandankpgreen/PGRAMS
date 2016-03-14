@@ -54,7 +54,11 @@ public partial class Account_Login : Page
                     }
                     else if (rdUserRole.Text == "Administrator")
                     {
-
+                        Response.Redirect("~/AdministratorPortal/Complaints.aspx");
+                    }
+                    else if (rdUserRole.Text == "Employee")
+                    {
+                        Response.Redirect("~/EmployeePortal/Tasks.aspx");
                     }
                     IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                 }
