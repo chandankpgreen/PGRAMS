@@ -1,9 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Administrator.master" AutoEventWireup="true" CodeFile="Tasks.aspx.cs" Inherits="AdministratorPortal_Tasks" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
-    <h4>Complaints:
-        <asp:DropDownList ID="ddlComplaints" runat="server" OnSelectedIndexChanged="ddlComplaints_SelectedIndexChanged"></asp:DropDownList></h4>
-    <hr />
+    <table style="table-layout: fixed; width: 50%">
+        <tr>
+            <td style="width: 30%">Select Complaint :</td>
+            <td>
+                <asp:DropDownList ID="ddlComplaints" CssClass="dropdown-menu dropdown-menu-site" runat="server" OnSelectedIndexChanged="ddlComplaints_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList></td>
+        </tr>
+        <tr>
+            <td>Description : </td>
+            <td>
+                <div class="text-info">
+                    <asp:Literal ID="ltlTaskDesc" runat="server"></asp:Literal>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     <h4>Tasks for this Complaint listed :</h4>
     <asp:GridView ID="grdTasks" runat="server" BackColor="#FCF8E3" CellPadding="5" Font-Names="Open Sans,Segoe UI" CssClass="grid-grievances" Width="100%" AutoGenerateColumns="False" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last" PagerStyle-BackColor="#FFCCCC">
         <AlternatingRowStyle BackColor="#F2DEDE" />
@@ -12,16 +25,25 @@
             <asp:BoundField HeaderText="Description" DataField="TaskDescription" />
             <asp:BoundField HeaderText="Target Start Date" DataField="TargetStartDate" />
             <asp:BoundField HeaderText="Target Complettion Date" DataField="TargetCompletionDate" />
-            <asp:BoundField HeaderText="Men Reqired" DataField="MenReqired" />
+            <asp:BoundField HeaderText="Men Required" DataField="MenReqired" />
             <asp:BoundField HeaderText="Budget" DataField="TaskBudget" DataFormatString="Rs.{0:##,##,###.00}" />
             <asp:BoundField HeaderText="Comments" DataField="Comments" />
-            <asp:BoundField HeaderText="Assigned to" DataField="Resolver" />
+            <asp:TemplateField HeaderText="Assigned to">
+                <EditItemTemplate>
+                    <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("Resolver") %>'></asp:TextBox>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label1" runat="server" Text='<%# Eval( "Resolver.EmployeeID")  + ": " + Eval( "Resolver.FirstName") + " " +  Eval( "Resolver.LastName") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:BoundField HeaderText="Status" DataField="Status" />
         </Columns>
         <EmptyDataTemplate>
             <asp:Literal ID="Literal1" runat="server" Text="No tasks for the selected Grievance"></asp:Literal>
         </EmptyDataTemplate>
         <HeaderStyle BackColor="#337AB7" ForeColor="White" />
+
+<PagerSettings FirstPageText="First" LastPageText="Last"></PagerSettings>
 
         <PagerStyle BackColor="#337AB7" ForeColor="White" HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False"></PagerStyle>
     </asp:GridView>
@@ -51,7 +73,7 @@
                             <tr>
                                 <td>Employee to Assign this:<span class="required-asterisk">*</span></td>
                                 <td>
-                                    <asp:DropDownList ID="ddlEmployee" runat="server"></asp:DropDownList></td>
+                                    <asp:DropDownList ID="ddlEmployee" CssClass="dropdown-menu dropdown-menu-site" runat="server"></asp:DropDownList></td>
                             </tr>
                             <tr>
                                 <td>Task Budget in Rupees<span class="required-asterisk">*</span></td>
@@ -67,13 +89,13 @@
                             <tr>
                                 <td>Target Start date<span class="required-asterisk">*</span></td>
                                 <td>
-                                    <asp:TextBox ID="txtTargetStartDate" TextMode="Date" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="txtTargetStartDate" runat="server"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Target Completion date<span class="required-asterisk">*</span></td>
                                 <td>
-                                    <asp:TextBox ID="txtTargetCompletionDate" TextMode="Date" runat="server"></asp:TextBox></td>
+                                    <asp:TextBox ID="txtTargetCompletionDate" runat="server"></asp:TextBox></td>
                             </tr>
                             <tr>
                                 <td>Comments</td>
@@ -84,7 +106,7 @@
                     </div>
                     <div class="modal-footer">
                         <div class="btn btn-primary" id="btnCreateDisplay">Create</div>
-                        <asp:Button ID="btnCreate" class="btn btn-primary" runat="server" Visible="false" Text="Create" OnClick="btnCreate_Click" />
+                        <asp:Button ID="btnCreate" CssClass="hidden" runat="server" Text="Create" OnClick="btnCreate_Click" />
                         <div class="btn btn-danger" data-dismiss="modal">Cancel</div>
                     </div>
                 </div>
@@ -92,6 +114,7 @@
             </div>
         </div>
     </div>
+    
     <script type="text/javascript">
         function isNumberKey(evt) {
             var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -103,7 +126,7 @@
         }
         function ValidateTask() {
             var errmsg = "";
-            var dateregex = new RegExp("\d{2}\/\d{2}\/\d{4}");
+           
             if ($("#<%=txtDescription.ClientID%>").val().length === 0) {
                 errmsg += "Description is required.<br/>";
             }
@@ -113,14 +136,30 @@
             if ($("#<%=txtBudget.ClientID%>").val().length === 0) {
                 errmsg += "Task budget is required.<br/>";
             }
+            if (!isFinite($("#<%=txtBudget.ClientID%>").val())) {
+                errmsg += "Task budget should be a valid number of Rupees.<br/>";
+            }
             if ($("#<%=txtMenRequired.ClientID%>").val().length === 0) {
                 errmsg += "Please enter the number of men required to complete the task.<br/>";
             }
-            if (dateregex.test($("#<%=txtTargetStartDate.ClientID%>").val())) {
+            if (!isFinite($("#<%=txtMenRequired.ClientID%>").val())) {
+                errmsg += "Number  of men required should a valid number.<br/>";
+            }
+            if (!moment($("#<%=txtTargetStartDate.ClientID%>").val()).isValid()) {
                 errmsg += "Invalid target start date.<br/>";
             }
-            if (dateregex.test($("#<%=txtTargetCompletionDate.ClientID%>").val())) {
+            if (!moment($("#<%=txtTargetCompletionDate.ClientID%>").val()).isValid()) {
                 errmsg += "Invalid target completion date.<br/>";
+            }
+            if (moment($("#<%=txtTargetStartDate.ClientID%>").val()).isValid()) {
+                if (moment($("#<%=txtTargetStartDate.ClientID%>").val()).isBefore(new Date())) {
+                    errmsg += "Target start date cannot be before today.<br/>";
+                }
+            }
+            if (moment($("#<%=txtTargetCompletionDate.ClientID%>").val()).isValid()) {
+                if (moment($("#<%=txtTargetCompletionDate.ClientID%>").val()).isBefore(new Date())) {
+                    errmsg += "Target completion date cannot be before today.<br/>";
+                }
             }
             errmsg += "";
             return errmsg;
@@ -129,9 +168,9 @@
             $("#btnCreateTask").off("click").on("click", function () {
                 $("#modal-Task").modal("show");
             });
-            $("#<%=txtMenRequired%>", "#<%=txtBudget%>").off("keypress").on("keypress", function () {
+            $("#<%=txtMenRequired.ClientID%>", "#<%=txtBudget.ClientID%>").off("keypress").on("keypress", function () {
                 return isNumberKey(event);
-            })
+            });
             $("#btnCreateDisplay").off("click").on("click", function () {
                 var errmsg = ValidateTask();
                 if (errmsg.length > 0) {
@@ -139,10 +178,12 @@
                 }
                 else {
                     $("#taskalert").empty().hide();
-                    $("#<%=btnCreate%>").trigger("click");
+                    $("#<%=btnCreate.ClientID%>").trigger("click");
                 }
 
             });
+            $("#<%=txtTargetStartDate.ClientID%>").datepicker({ minDate: 0, defaultDate: 0, showMonthAfterYear: true });
+            $("#<%=txtTargetCompletionDate.ClientID%>").datepicker({ minDate: 0, defaultDate: 0, showMonthAfterYear: true });
         });
     </script>
 </asp:Content>

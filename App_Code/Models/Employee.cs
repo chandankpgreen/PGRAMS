@@ -13,6 +13,7 @@ namespace PGRAMS_CS
 {
     public class Employee : ApplicationUser
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long EmployeeID { get; set; }
         public Grievance.GrievanceTypes Department { get; set; }
 

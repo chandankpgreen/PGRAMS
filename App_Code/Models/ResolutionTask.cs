@@ -24,6 +24,7 @@ namespace PGRAMS_CS
         public int MenReqired { get; set; }
         public DateTime TargetStartDate { get; set; }
         public DateTime TargetCompletionDate { get; set; }
+        public DateTime? ActualCompletionDate { get; set; }
         public string Comments { get; set; }
         public virtual Grievance Grievance { get; set; }
         public TaskStatus Status { get; set; }

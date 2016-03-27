@@ -148,3 +148,6 @@ ul.site-menuitem-bordered.site-navbar-menuitem-primary > li:not(:last-child){
     /* To center horizontally */
     margin: 0 auto;
 }
+.table-padded td{
+    padding:10px;
+}

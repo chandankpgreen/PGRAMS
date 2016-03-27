@@ -23,6 +23,7 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
             if (long.TryParse(GrievanceIDStr, out GrievanceID))
             {
                 ddlComplaints.SelectedValue = GrievanceID.ToString();
+                ShowTaskDescription();
             }
         }
     }
@@ -43,11 +44,12 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
     {
         ApplicationDbContext dbContext = new ApplicationDbContext();
         var userMgr = new UserManager();
+        ddlEmployee.Items.Clear();
 
         List<Employee> EmployeeList = (from Employee emp in dbContext.Employees
                                        where emp.Department == (from Grievance gr in dbContext.Grievances
-                                                             where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
-                                                             select gr.GrievanceType).FirstOrDefault()
+                                                                where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                                                                select gr.GrievanceType).FirstOrDefault()
                                        orderby emp.EmployeeID
                                        select emp).ToList();
         foreach (Employee emp in EmployeeList)
@@ -68,9 +70,24 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
             grdTasks.DataSource = resouoltionTasks;
             grdTasks.DataBind();
         }
+        ShowTaskDescription();
+    }
+
+    protected void ShowTaskDescription()
+    {
+        using (ApplicationDbContext dbContext = new ApplicationDbContext())
+        {
+            Grievance griev = (from Grievance gr in dbContext.Grievances
+                               where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
+                               select gr).FirstOrDefault();
+            if (griev != null)
+                ltlTaskDesc.Text = griev.GrievanceDescription;
+        }
     }
     protected void ddlComplaints_SelectedIndexChanged(object sender, EventArgs e)
     {
+        BindTasks();
+        ShowTaskDescription();
         BindEmployees();
     }
     protected void btnCreate_Click(object sender, EventArgs e)
@@ -85,7 +102,7 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
                 TaskDescription = txtDescription.Text,
                 TaskBudget = Convert.ToDecimal(txtBudget.Text),
                 TargetStartDate = Convert.ToDateTime(txtTargetStartDate.Text),
-                TargetCompletionDate =Convert.ToDateTime(txtTargetCompletionDate.Text),
+                TargetCompletionDate = Convert.ToDateTime(txtTargetCompletionDate.Text),
                 MenReqired = Convert.ToInt32(txtMenRequired.Text),
                 Comments = txtComments.Text,
                 Grievance = griev,
@@ -97,10 +114,10 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
             dbContext.ResolutionTasks.Add(task);
             dbContext.SaveChanges();
 
-            var taskList = (from Grievance gr in dbContext.Grievances
+           List<ResolutionTask> ResTaskList = (from Grievance gr in dbContext.Grievances
                             where gr.GrievanceID.ToString() == ddlComplaints.SelectedValue
-                            select gr.ResolutionTasks);
-            List<ResolutionTask> ResTaskList = taskList.Cast<ResolutionTask>().ToList();
+                            select gr.ResolutionTasks).FirstOrDefault().ToList();
+
             if (ResTaskList.Count > 0)
             {
                 DateTime LatestDateForATask = ResTaskList[0].TargetCompletionDate;
