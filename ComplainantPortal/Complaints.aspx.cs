@@ -77,7 +77,7 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
                             smtpClient.EnableSsl = true;
                             MailMessage mail = new MailMessage();
                             mail.Subject = "Your Complaint has been registered";
-                            mail.Body = string.Format(Resources.Resource.MessageBody_Complete, LoggedInComplainant.FirstName + " " + LoggedInComplainant.LastName, newGrievance.GrievanceID);
+                            mail.Body = string.Format(Resources.Resource.MessageBody, LoggedInComplainant.FirstName + " " + LoggedInComplainant.LastName, newGrievance.GrievanceID);
 
 
                             //Setting From , To and CC

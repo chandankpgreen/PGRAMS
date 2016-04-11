@@ -134,6 +134,8 @@ public partial class AdministratorPortal_Tasks : System.Web.UI.Page
 
             }
         }
+        BindTasks();
+            BindEmployees();
 
     }
 }

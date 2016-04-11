@@ -129,8 +129,8 @@
                         $("#btnCompleted").addClass("disabled");
                     }
                     else if ($("#<%=ddlResolutionStatus.ClientID%>").val() == "1") {
-                        $("#btnStarted").removeClass("disabled");
-                        $("#btnInProgress").addClass("disabled");
+                        $("#btnStarted").addClass("disabled");
+                        $("#btnInProgress").removeClass("disabled");
                         $("#btnCompleted").addClass("disabled");
                     }
                     else if ($("#<%=ddlResolutionStatus.ClientID%>").val() == "2") {

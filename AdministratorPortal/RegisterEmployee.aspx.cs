@@ -11,9 +11,12 @@ public partial class AdministratorPortal_RegisterEmployee : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        foreach (Grievance.GrievanceTypes value in Enum.GetValues(typeof(Grievance.GrievanceTypes)))
+        if (!Page.IsPostBack)
         {
-            Department.Items.Add(new ListItem(value.GetDescription(), ((int)value).ToString()));
+            foreach (Grievance.GrievanceTypes value in Enum.GetValues(typeof(Grievance.GrievanceTypes)))
+            {
+                Department.Items.Add(new ListItem(value.GetDescription(), ((int)value).ToString()));
+            }
         }
     }
 
@@ -42,7 +45,7 @@ public partial class AdministratorPortal_RegisterEmployee : System.Web.UI.Page
             SuccessMessage.Visible = true;
             ErrorMessage.Visible = false;
 
-            FirstName.Text = LastName.Text = PhoneNumber.Text = Email.Text = Password.Text = ConfirmPassword.Text = string.Empty;
+           UserName.Text =  FirstName.Text = LastName.Text = PhoneNumber.Text = Email.Text = Password.Text = ConfirmPassword.Text = string.Empty;
         }
         else
         {

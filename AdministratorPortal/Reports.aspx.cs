@@ -43,6 +43,7 @@ public partial class AdministratorPortal_Reports : System.Web.UI.Page
                     {
                         tasklist = (from ResolutionTask task in DbContext.ResolutionTasks
                                         where task.Status  != ResolutionTask.TaskStatus.Completed
+                                        && task.Resolver.EmployeeID == emp.EmployeeID
                                         select task).ToList();
                         dt.Rows.Add(emp.EmployeeID, emp.FirstName + " " + emp.LastName,tasklist.Count);
                     }
@@ -83,17 +84,29 @@ public partial class AdministratorPortal_Reports : System.Web.UI.Page
                     Array values = Enum.GetValues(typeof(Grievance.GrievanceTypes));
                     foreach (int value in values)
                     {
-                        long Menrequired = (from ResolutionTask task in
-                                                (from Grievance gr in DbContext.Grievances
-                                                 where gr.GrievanceType == (Grievance.GrievanceTypes)value
-                                                 select gr.ResolutionTasks)
-                                            select task.MenReqired).Sum();
+                        long Menrequired = 0;
+                        foreach (Grievance gr in grlist)
+                        {
+                            if (gr.GrievanceType == (Grievance.GrievanceTypes)value)
+                            {
+                                foreach (ResolutionTask task in gr.ResolutionTasks)
+                                {
+                                    Menrequired += task.MenReqired;
+                                }
+                            }
+                        }
 
-                        decimal CostIncurred = (from ResolutionTask task in
-                                                (from Grievance gr in DbContext.Grievances
-                                                 where gr.GrievanceType == (Grievance.GrievanceTypes)value
-                                                 select gr.ResolutionTasks)
-                                            select task.TaskBudget).Sum();
+                        decimal CostIncurred = 0;
+                        foreach (Grievance gr in grlist)
+                        {
+                            if (gr.GrievanceType == (Grievance.GrievanceTypes)value)
+                            {
+                                foreach (ResolutionTask task in gr.ResolutionTasks)
+                                {
+                                    CostIncurred += task.TaskBudget;
+                                }
+                            }
+                        }
 
                         dt.Rows.Add(Enum.GetName(typeof(Grievance.GrievanceTypes), value), Menrequired,CostIncurred);
 

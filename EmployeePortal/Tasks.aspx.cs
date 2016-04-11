@@ -98,9 +98,10 @@ public partial class EmployeePortal_Tasks : System.Web.UI.Page
                 List<Grievance> grievancelist = new List<Grievance>();
                 foreach (ResolutionTask tk in tklist)
                 {
-                    grievancelist = (from Grievance gr in DbContext.Grievances
-                                     where gr.ResolutionTasks.Contains(tk)
-                                     select gr).ToList();
+                    if (!grievancelist.Exists(x => x.GrievanceID == tk.Grievance.GrievanceID))
+                    {
+                        grievancelist.Add(tk.Grievance);
+                    }
                 }
                 foreach (Grievance gr in grievancelist)
                 {
