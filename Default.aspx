@@ -39,20 +39,67 @@
         </div>
     </div>--%>
 
-    <div class="section-container">
+    <div class="section-container" style="background-image:url(Content/images/gujaratmap.jpg);background-repeat:no-repeat;background-size:cover">
         <div>
-            <div class="inner-div" style="margin:5px;border:1px solid #AE0C5E;width:100%">Updates</div>
-            <div class="inner-div" style="margin:5px;border:1px solid #AE0C5E;width:100%">Notofications and Updates</div>
+             <div class="inner-div marquee-outer" style="margin:5px;border:1px solid #AE0C5E;">
+                <div style="text-align:center;width:100%"><b style="text-decoration:underline;text-align:center">Updates</b></div>
+                <div class="marquee-inner">
+                    <p>Prime minister to launch Swacch Bharat Abhiyan in Ahmedabad</p>
+                    <p>Two more talukas to be covered by AMC</p>
+                    <p>Amreli to get fresh water supply from Sardar Sarovar dam soon</p>
+                </div>
+            </div>
+             <div class="inner-div marquee-outer" style="margin:5px;border:1px solid #AE0C5E;color:blue">
+                <div style="text-align:center;width:100%"><b style="text-decoration:underline;text-align:center">Our Activities at a glance</b></div>
+                <div>
+                    <div id="slideshow">
+                    <div><img src="<%:System.Web.VirtualPathUtility.ToAbsolute("/Content/images/Glance1.jpg") %>" alt=""></div>
+                    <div><img src="<%:System.Web.VirtualPathUtility.ToAbsolute("/Content/images/Glance2.jpg") %>" alt=""></div>
+                    <div><img src="<%:System.Web.VirtualPathUtility.ToAbsolute("/Content/images/Glance3.jpg") %>" alt=""></div>
+                    <div><img src="<%:System.Web.VirtualPathUtility.ToAbsolute("/Content/images/Glance4.jpg") %>" alt=""></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
         <div class="inner-div">
-            <span>Our Activities at a glance</span>
+            <span></span>
         </div>
         </div>
          <div >
-            <div class="inner-div" style="margin:5px;border:1px solid #AE0C5E;width:100%">Noifications</div>
-            <div class="inner-div" style="margin:5px;border:1px solid #AE0C5E;width:100%">Contact Us</div>
+             <div class="inner-div marquee-outer" style="margin:5px;border:1px solid #AE0C5E;color:green">
+                <div style="text-align:center;width:100%"><b style="text-decoration:underline;text-align:center;">Notifications</b></div>
+                <div class="marquee-inner">
+                    <p>Recruitment notice for Group-B and D posts in various departments</p>
+                    <p>Tenders invited for construction of Barrages at Nal Sarovar, Mehsana</p>
+                    <p>Tenders invited for construction of Flyover at Vadaj, Ahmedabad</p>
+                </div>
+            </div>
+               <div class="inner-div marquee-outer" style="margin:5px;border:1px solid #AE0C5E;color:brown">
+                <div style="text-align:center;width:100%"><b style="text-decoration:underline;text-align:center;">Contact Us</b></div>
+                <div class="marquee-inner">
+                    <div>G-52, GIDC Block,
+                            Nariman House
+                            Sarkhej Gandhinagar Highway,
+                            Ahmedabad - 380089
+                       </div>
+                    <p>Phone no.-079-986574123</p>
+                    
+                </div>
+            </div>
         </div>
   </div>
+    <script type="text/javascript">
+        $("#slideshow > div:gt(0)").hide();
+
+        setInterval(function () {
+            $('#slideshow > div:first')
+              .fadeOut(1000)
+              .next()
+              .fadeIn(1000)
+              .end()
+              .appendTo('#slideshow');
+        }, 3000);
+    </script>
 
 </asp:Content>

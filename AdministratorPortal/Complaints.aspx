@@ -57,7 +57,7 @@
             <asp:BoundField DataField="ResolutionStatus" HeaderText="Status" SortExpression="ResolutionStatus">
                 <HeaderStyle Width="15%" Wrap="False" />
             </asp:BoundField>
-            <asp:BoundField DataField="Comments" HeaderText="Comments" SortExpression="Comments">
+            <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location">
                 <HeaderStyle Width="25%" Wrap="False" />
             </asp:BoundField>
         </Columns>

@@ -151,3 +151,54 @@ ul.site-menuitem-bordered.site-navbar-menuitem-primary > li:not(:last-child){
 .table-padded td{
     padding:10px;
 }
+
+
+.marquee-outer {
+ height: 100px;	
+ overflow: hidden;
+ position: relative;
+ color: #AE0C5E;
+ background-color:#FFFACD
+}
+.marquee-inner {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ margin: 0;
+ line-height: 30px;
+ text-align: center;
+ /* Starting position */
+ -moz-transform:translateY(100%);
+ -webkit-transform:translateY(100%);	
+ transform:translateY(100%);
+ /* Apply animation to this element */	
+ -moz-animation: scroll-top 10s linear infinite;
+ -webkit-animation: scroll-top 10s linear infinite;
+ animation: scroll-top 10s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes scroll-top {
+ 0%   { -moz-transform: translateY(100%); }
+ 100% { -moz-transform: translateY(-100%); }
+}
+@-webkit-keyframes scroll-top {
+ 0%   { -webkit-transform: translateY(100%); }
+ 100% { -webkit-transform: translateY(-100%); }
+}
+@keyframes scroll-top {
+ 0%   { 
+ -moz-transform: translateY(100%); /* Browser bug fix */
+ -webkit-transform: translateY(100%); /* Browser bug fix */
+ transform: translateY(100%); 		
+ }
+ 100% { 
+ -moz-transform: translateY(-100%); /* Browser bug fix */
+ -webkit-transform: translateY(-100%); /* Browser bug fix */
+ transform: translateY(-100%); 
+ }
+}
+
+#slideshow div, #slideshow img{
+    width:100%;
+    height:100%
+}

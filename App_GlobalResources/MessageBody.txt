@@ -1,0 +1,8 @@
+Hi {0},
+
+Your complaint has been registered successfully with the publlic grievance redressal department.
+We will try to addresss the complaint as soon as possible. Your Complaint ID is {1}.Please be 
+patient and  kindly keep this for future reference.
+
+Always ready to help,
+The Grievance redressal Dept.

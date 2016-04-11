@@ -27,12 +27,6 @@
                     CssClass="text-danger" ErrorMessage="Complaint description is required." />
             </div>
         </div>
-        <div class="form-group">
-            <asp:Label runat="server" AssociatedControlID="txtComments" CssClass="col-md-2 control-label">Comments</asp:Label>
-            <div class="col-md-10">
-                <asp:TextBox runat="server" ID="txtComments" CssClass="form-control" TextMode="MultiLine" Rows="7" />
-            </div>
-        </div>
          <div class="form-group">
             <asp:Label runat="server" AssociatedControlID="fuComplaintPic" CssClass="col-md-2 control-label">Problem area Picure(Optional)</asp:Label>
             <div class="col-md-10">

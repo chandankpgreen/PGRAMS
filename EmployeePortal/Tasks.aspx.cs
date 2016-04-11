@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using PGRAMS_CS;
+using System.Net.Mail;
 
 public partial class EmployeePortal_Tasks : System.Web.UI.Page
 {
@@ -109,6 +110,33 @@ public partial class EmployeePortal_Tasks : System.Web.UI.Page
                     if (TaskList.Count == 0)
                     {
                         gr.ResolutionStatus = Grievance.ResolutionStatuses.Completed;
+                        if (!string.IsNullOrEmpty(gr.Complainant.Email))
+                        {
+                            try
+                            {
+                                SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com", 587);
+
+                                smtpClient.Credentials = new System.Net.NetworkCredential("fileboundtest@hotmail.com", "ipl123*");
+                                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                                smtpClient.EnableSsl = true;
+                                MailMessage mail = new MailMessage();
+                                mail.Subject = "Your Complaint has been completed";
+                                mail.Body = string.Format(Resources.Resource.MessageBody_Complete, gr.Complainant.FirstName + " " + gr.Complainant.LastName, gr.GrievanceID);
+
+
+                                //Setting From , To and CC
+                                mail.From = new MailAddress("fileboundtest@hotmail.com", "Grievance redressal department");
+                                mail.To.Add(new MailAddress(gr.Complainant.Email));
+                                mail.CC.Add(new MailAddress("Auditor@pgrams.com"));
+
+                                smtpClient.Send(mail);
+                            }
+                            catch (Exception ex)
+                            {
+                                var x = ex;
+
+                            }
+                        }
                     }
                 }
                 DbContext.SaveChanges();

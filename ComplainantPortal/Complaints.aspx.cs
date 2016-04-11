@@ -8,17 +8,19 @@ using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using System.ComponentModel;
 using System.IO;
+using System.Net.Mail;
 
 public partial class ComplainantPortal_Complaints : System.Web.UI.Page
 {
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        foreach(Grievance.GrievanceTypes value in Enum.GetValues( typeof(Grievance.GrievanceTypes))){
+        foreach (Grievance.GrievanceTypes value in Enum.GetValues(typeof(Grievance.GrievanceTypes)))
+        {
             ddlComplaintType.Items.Add(new ListItem(value.GetDescription(), ((int)value).ToString()));
         }
     }
- 
+
     protected void btnRegisterComplaint_Click(object sender, EventArgs e)
     {
         string path = Server.MapPath("~/Content/Grievances/Images");
@@ -43,29 +45,57 @@ public partial class ComplainantPortal_Complaints : System.Web.UI.Page
             {
                 using (ApplicationDbContext DbContext = new ApplicationDbContext())
                 {
-                    Complainant LoggedInComplainant =  DbContext.Complainants.ToList().Where(x=>(x.Id ==User.Identity.GetUserId())).FirstOrDefault() ;
+                    Complainant LoggedInComplainant = DbContext.Complainants.ToList().Where(x => (x.Id == User.Identity.GetUserId())).FirstOrDefault();
                     Grievance newGrievance = new Grievance()
                     {
                         GrievanceDescription = txtComplaintDescription.Text,
                         DateLogged = DateTime.Now,
-                        Comments = txtComments.Text,
                         GrievanceType = (Grievance.GrievanceTypes)Convert.ToInt16(ddlComplaintType.SelectedValue),
                         ResolutionStatus = Grievance.ResolutionStatuses.Created,
-                        Complainant = LoggedInComplainant
+                        Complainant = LoggedInComplainant,
+                        Location = LoggedInComplainant.Address + " - " + LoggedInComplainant.PinCode
                     };
-                   
+
                     DbContext.Grievances.Add(newGrievance);
                     DbContext.SaveChanges();
 
-                     if (fuComplaintPic.HasFile){
-                         string picturename = newGrievance.GrievanceID.ToString() +  Path.GetExtension(fuComplaintPic.PostedFile.FileName);
-                         newGrievance.Picture = picturename;
-                         fuComplaintPic.PostedFile.SaveAs(Path.Combine(path, picturename));
-                         DbContext.SaveChanges();
+                    if (fuComplaintPic.HasFile)
+                    {
+                        string picturename = newGrievance.GrievanceID.ToString() + Path.GetExtension(fuComplaintPic.PostedFile.FileName);
+                        newGrievance.Picture = picturename;
+                        fuComplaintPic.PostedFile.SaveAs(Path.Combine(path, picturename));
+                        DbContext.SaveChanges();
+                    }
+                    if (!string.IsNullOrEmpty(LoggedInComplainant.Email))
+                    {
+                        try
+                        {
+                            SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com", 587);
+
+                            smtpClient.Credentials = new System.Net.NetworkCredential("fileboundtest@hotmail.com", "ipl123*");
+                            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                            smtpClient.EnableSsl = true;
+                            MailMessage mail = new MailMessage();
+                            mail.Subject = "Your Complaint has been registered";
+                            mail.Body = string.Format(Resources.Resource.MessageBody_Complete, LoggedInComplainant.FirstName + " " + LoggedInComplainant.LastName, newGrievance.GrievanceID);
+
+
+                            //Setting From , To and CC
+                            mail.From = new MailAddress("fileboundtest@hotmail.com", "Grievance redressal department");
+                            mail.To.Add(new MailAddress(LoggedInComplainant.Email));
+                            mail.CC.Add(new MailAddress("Auditor@pgrams.com"));
+
+                            smtpClient.Send(mail);
+                        }
+                        catch (Exception ex)
+                        {
+                            var x = ex;
+
+                        }
                     }
                 }
-                
-                
+
+
                 Response.Redirect("TrackComplaints.aspx?Result=Success");
 
             }

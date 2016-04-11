@@ -37,8 +37,7 @@ namespace PGRAMS_CS
 
         public virtual Complainant Complainant { get; set; }
 
-        [DisplayName("Comments")]
-        public string Comments { get; set; }
+        public string Location { get; set; } 
 
         public string Picture { get; set; }
         public virtual ICollection<ResolutionTask> ResolutionTasks { get; set; }
@@ -46,7 +45,7 @@ namespace PGRAMS_CS
 
         public Grievance()
         {
-
+            
         }
         public enum GrievanceTypes
         {

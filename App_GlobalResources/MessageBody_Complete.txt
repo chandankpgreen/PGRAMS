@@ -1,0 +1,8 @@
+Hi {0},
+
+Your Complaint ID {1} has been resolved successfully by the Grievance redresssal department.
+Kindly verify this yourself and feel free to reopen the complaint/ send feedback if you do 
+not find the work to be satisfactory ,else kindly mark your complaint as verified.
+
+Always ready to help,
+The Grievance redressal Dept.
