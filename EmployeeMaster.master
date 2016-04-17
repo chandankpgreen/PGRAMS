@@ -1,0 +1,102 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="EmployeeMaster.master.cs" Inherits="EmployeeMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sahaj - Public Grievance Redressal and Monitoring System</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="Content/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="main-site-header">
+            <table class="site-header-table">
+                <tr>
+                    <td class="site-common-line-height">
+                        <h1>Sahaj</h1>
+                        <sub>Public Grievance Redressal and Monitoring System - A Govt. of Gujarat Initiative
+                        </sub>
+                    </td>
+                    <td>
+                        <div class="site-hr-centered-div">
+                            <img src="<%:System.Web.VirtualPathUtility.ToAbsolute("/Content/images/Emblem_ROI.png") %>" height="150" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <table style="background-color:black;width:100%;height:40px">
+            <tr>
+                <td>
+
+               
+            <table class="site-header-table" style="display:table">
+                <tr>
+                    <td>
+                       
+                <div style="float:left">
+                        <ul class="site-navbar-menuitem-primary site-menuitem-bordered" style="padding:0;margin:0">
+                            <li class="site-navbar-dropdown"><a href=<%:ResolveClientUrl("~/EmployeePortal/Tasks.aspx")%>>Tasks</a></li>
+                        </ul>
+                    </div>
+                <div style="float:right">
+                 <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <LoggedInTemplate>
+                             <ul class="site-navbar-menuitem-primary site-menuitem-bordered"  style="padding:0;margin:0;">
+                                <li class="site-menuitem-bordered"><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
+                                <li>
+                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                </li>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                    </div>
+                          </td>
+                </tr>
+            </table>
+                     </td>
+            </tr>
+        </table>
+
+        
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <%--<hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - PGRAMS</p>
+            </footer>--%>
+        </div>
+    </form>
+</body>
+</html>
