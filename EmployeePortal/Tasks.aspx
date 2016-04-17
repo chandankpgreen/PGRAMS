@@ -102,7 +102,7 @@
             <p>Are you sure you want to mark selected task(s) as complete?</p>
           </div>
           <div class="modal-footer">
-            <asp:Button ID="btnCompleteConfirm" runat="server" CssClass="btn btn-primary" Text="Yes" OnClick="btnCompleteConfirm_Click"/>
+            <asp:Button ID="btnCompleteConfirm" runat="server" CssClass="btn btn-primary" Text="Yes" OnClick="btnCompleteConfirm_Click" OnClientClick="$('#modal-Complete').modal('hide');"/>
               <div class="btn btn-danger" data-dismiss="modal">No</div>
           </div>
         </div>

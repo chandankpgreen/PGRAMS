@@ -79,6 +79,53 @@ public partial class EmployeePortal_Tasks : System.Web.UI.Page
             dbContext.SaveChanges();
             GetTasks();
             CheckGrievanceStatus(CheckedTaskList);
+            // Now mark all grievances whose tasks have been completed as "Complete"
+            List<Grievance> grievancelist = new List<Grievance>();
+            foreach (ResolutionTask tk in CheckedTaskList)
+            {
+                if (!grievancelist.Exists(x => x.GrievanceID == tk.Grievance.GrievanceID))
+                {
+                    grievancelist.Add(tk.Grievance);
+                }
+            }
+            foreach (Grievance gr in grievancelist)
+            {
+                List<ResolutionTask> TaskList = (from ResolutionTask tk in gr.ResolutionTasks
+                                                 where tk.Status != ResolutionTask.TaskStatus.Completed
+                                                 select tk).ToList();
+                if (TaskList.Count == 0)
+                {
+                    gr.ResolutionStatus = Grievance.ResolutionStatuses.Completed;
+                    dbContext.SaveChanges();
+                    if (!string.IsNullOrEmpty(gr.Complainant.Email))
+                    {
+                        try
+                        {
+                            SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com", 587);
+
+                            smtpClient.Credentials = new System.Net.NetworkCredential("fileboundtest@hotmail.com", "ipl123*");
+                            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                            smtpClient.EnableSsl = true;
+                            MailMessage mail = new MailMessage();
+                            mail.Subject = "Your Complaint has been completed";
+                            mail.Body = string.Format(Resources.Resource.MessageBody_Complete, gr.Complainant.FirstName + " " + gr.Complainant.LastName, gr.GrievanceID);
+
+
+                            //Setting From , To and CC
+                            mail.From = new MailAddress("fileboundtest@hotmail.com", "Grievance redressal department");
+                            mail.To.Add(new MailAddress(gr.Complainant.Email));
+                            mail.CC.Add(new MailAddress("Auditor@pgrams.com"));
+
+                            smtpClient.Send(mail);
+                        }
+                        catch (Exception ex)
+                        {
+                            var x = ex;
+
+                        }
+                    }
+                }
+            }
             ErrorPlaceHolder.Visible = false;
             SuccessMessage.Text = "Selected task(s) have been marked as Completed.";
             SuccessPlaceHolder.Visible = true;
@@ -95,52 +142,7 @@ public partial class EmployeePortal_Tasks : System.Web.UI.Page
         {
             using (ApplicationDbContext DbContext = new ApplicationDbContext())
             {
-                List<Grievance> grievancelist = new List<Grievance>();
-                foreach (ResolutionTask tk in tklist)
-                {
-                    if (!grievancelist.Exists(x => x.GrievanceID == tk.Grievance.GrievanceID))
-                    {
-                        grievancelist.Add(tk.Grievance);
-                    }
-                }
-                foreach (Grievance gr in grievancelist)
-                {
-                    List<ResolutionTask> TaskList = (from ResolutionTask tk in gr.ResolutionTasks
-                                                     where tk.Status != ResolutionTask.TaskStatus.Completed
-                                                     select tk).ToList();
-                    if (TaskList.Count == 0)
-                    {
-                        gr.ResolutionStatus = Grievance.ResolutionStatuses.Completed;
-                        if (!string.IsNullOrEmpty(gr.Complainant.Email))
-                        {
-                            try
-                            {
-                                SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com", 587);
-
-                                smtpClient.Credentials = new System.Net.NetworkCredential("fileboundtest@hotmail.com", "ipl123*");
-                                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                                smtpClient.EnableSsl = true;
-                                MailMessage mail = new MailMessage();
-                                mail.Subject = "Your Complaint has been completed";
-                                mail.Body = string.Format(Resources.Resource.MessageBody_Complete, gr.Complainant.FirstName + " " + gr.Complainant.LastName, gr.GrievanceID);
-
-
-                                //Setting From , To and CC
-                                mail.From = new MailAddress("fileboundtest@hotmail.com", "Grievance redressal department");
-                                mail.To.Add(new MailAddress(gr.Complainant.Email));
-                                mail.CC.Add(new MailAddress("Auditor@pgrams.com"));
-
-                                smtpClient.Send(mail);
-                            }
-                            catch (Exception ex)
-                            {
-                                var x = ex;
-
-                            }
-                        }
-                    }
-                }
-                DbContext.SaveChanges();
+               
             }
         }
         catch (Exception ex)
